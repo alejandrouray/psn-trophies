@@ -1,5 +1,4 @@
-import { Badge } from '@components/ui/badge'
-import { Card } from '@components/ui/card'
+import { Badge, Card, ErrorState } from '@components'
 import { getRecentTrophies, PSNConfigurationError } from '@services/psn'
 import Image from 'next/image'
 
@@ -15,7 +14,7 @@ export default async function DashboardPage() {
               Trophy <span className="text-blue-600">Hub</span>
             </h1>
             <p className="text-zinc-500 mt-2 font-mono text-xs uppercase tracking-[0.3em]">
-              Sincronizado con PlayStation Network
+              Synced with PlayStation Network
             </p>
           </header>
 
@@ -52,7 +51,7 @@ export default async function DashboardPage() {
                       {game.trophyTitleName}
                     </h3>
                     <p className="text-zinc-500 text-[10px] font-mono uppercase tracking-widest leading-none">
-                      Última vez:{' '}
+                      Last updated:{' '}
                       {new Date(game.lastUpdatedDateTime).toLocaleDateString()}
                     </p>
                   </div>
@@ -84,7 +83,7 @@ export default async function DashboardPage() {
                       type="button"
                       className="w-full bg-white text-black font-bold py-4 rounded-2xl hover:bg-blue-600 hover:text-white transition-all duration-300 text-[10px] uppercase tracking-[0.25em] shadow-lg"
                     >
-                      Ver Trofeos
+                      View Trophies
                     </button>
                   </div>
                 </div>
@@ -97,23 +96,22 @@ export default async function DashboardPage() {
   } catch (error) {
     if (error instanceof PSNConfigurationError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-black text-white p-4">
-          <div className="text-center spa ce-y-4 border border-red-900/50 p-8 rounded-lg bg-red-950/10">
-            <h2 className="text-2xl font-bold text-red-500">
-              Error de Configuración
-            </h2>
-            <p className="text-zinc-400 max-w-md">
-              Falta la variable{' '}
-              <code className="bg-zinc-800 px-2 py-1 rounded text-white">
+        <ErrorState
+          title="Configuration Incomplete"
+          icon="🔑"
+          description={
+            <>
+              Missing the variable{' '}
+              <code className="bg-zinc-800 px-2 py-1 rounded text-blue-400">
                 PSN_NPSSO
               </code>{' '}
-              en tu archivo .env.local.
-            </p>
-          </div>
-        </div>
+              in your .env.local file.
+            </>
+          }
+        />
       )
     }
 
-    throw error
+    return <ErrorState icon="📡" title="Connection Error" />
   }
 }

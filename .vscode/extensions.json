@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "biomejs.biome",
+    "statelyai.stately-vscode",
+    "christian-kohler.path-intellisense",
+    "bradlc.vscode-tailwindcss",
+    "usernamehw.errorlens"
+  ]
+}

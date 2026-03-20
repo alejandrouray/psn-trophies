@@ -1,20 +1,19 @@
-import type { AuthTokensResponse, TrophyTitle } from 'psn-api'
+import {
+  PSNConfigurationError,
+  type RecentTrophiesResponse,
+} from '@services/psn'
+import type { AuthTokensResponse } from 'psn-api'
 import {
   exchangeAccessCodeForAuthTokens,
   exchangeNpssoForAccessCode,
   getUserTitles,
 } from 'psn-api'
 
-export interface RecentTrophiesResult {
-  titles: TrophyTitle[]
-  totalItemCount: number
-}
-
-export async function getRecentTrophies(): Promise<RecentTrophiesResult> {
+export async function getRecentTrophies(): Promise<RecentTrophiesResponse> {
   const npsso = process.env.PSN_NPSSO
 
   if (!npsso) {
-    throw new Error('PSN_NPSSO environment variable is not defined.')
+    throw new PSNConfigurationError()
   }
 
   const accessCode = await exchangeNpssoForAccessCode(npsso)

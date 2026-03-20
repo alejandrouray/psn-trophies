@@ -1,6 +1,5 @@
 import { Badge } from '@components/ui/badge'
-import { Card, CardContent } from '@components/ui/card'
-import { Progress } from '@components/ui/progress'
+import { Card } from '@components/ui/card'
 import { getRecentTrophies, PSNConfigurationError } from '@services/psn'
 import Image from 'next/image'
 
@@ -21,41 +20,74 @@ export default async function DashboardPage() {
           </header>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {titles.map((game) => (
+            {titles.map((game, index) => (
               <Card
                 key={game.npCommunicationId}
-                className="bg-zinc-900/40 border-white/5 backdrop-blur-md overflow-hidden group hover:border-blue-500/50 transition-all duration-500"
+                className="relative flex flex-col h-full overflow-hidden group border-none bg-[#030303] rounded-[2.5rem] transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/10 p-0"
               >
-                <div className="relative aspect-video">
+                <div
+                  className="relative aspect-4/5 w-full shrink-0 overflow-hidden"
+                  style={{
+                    maskImage:
+                      'linear-gradient(to bottom, black 60%, transparent 100%)',
+                    WebkitMaskImage:
+                      'linear-gradient(to bottom, black 60%, transparent 100%)',
+                  }}
+                >
                   <Image
                     src={game.trophyTitleIconUrl}
                     alt={game.trophyTitleName}
+                    priority={index < 6}
                     fill
-                    className="object-cover grayscale-20 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                    className="object-cover object-top transition-transform duration-700 group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-zinc-950 via-transparent to-transparent" />
-                  <Badge className="absolute top-3 right-3 bg-blue-700/80 text-[10px] border-none font-bold">
-                    {game.trophyTitlePlatform}
-                  </Badge>
+
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black via-black/90 to-transparent z-10" />
                 </div>
 
-                <CardContent className="p-5">
-                  <h3 className="font-bold truncate mb-4 text-zinc-100 group-hover:text-blue-400 transition-colors">
-                    {game.trophyTitleName}
-                  </h3>
-
-                  <div className="space-y-3">
-                    <div className="flex justify-between text-[10px] font-black uppercase tracking-tighter text-zinc-500">
-                      <span>Progreso Total</span>
-                      <span className="text-blue-500">{game.progress}%</span>
-                    </div>
-                    <Progress
-                      value={game.progress}
-                      className="h-1 bg-zinc-800"
-                    />
+                <div className="flex flex-col flex-1 p-8 pt-0 -mt-16 z-10 relative">
+                  <div className="space-y-1 mb-6">
+                    <h3 className="text-2xl font-bold text-white tracking-tight leading-tight">
+                      {game.trophyTitleName}
+                    </h3>
+                    <p className="text-zinc-500 text-[10px] font-mono uppercase tracking-widest leading-none">
+                      Última vez:{' '}
+                      {new Date(game.lastUpdatedDateTime).toLocaleDateString()}
+                    </p>
                   </div>
-                </CardContent>
+
+                  <div className="mt-auto space-y-5">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 bg-zinc-900/60backdrop-blur-md px-3 py-1.5 rounded-full border border-white/5">
+                        <span className="text-xs">🏆</span>
+                        <span className="text-[10px] text-white font-bold tracking-wider">
+                          {game.progress}%
+                        </span>
+                      </div>
+                      <Badge
+                        variant="outline"
+                        className="border-zinc-800 text-zinc-500 text-[9px] uppercase tracking-widest bg-black/20"
+                      >
+                        {game.trophyTitlePlatform}
+                      </Badge>
+                    </div>
+
+                    <div className="w-full h-1.5 bg-zinc-900/50 rounded-full overflow-hidden border border-white/5">
+                      <div
+                        className="h-full bg-blue-600 shadow-[0_0_12px_rgba(37,99,235,0.6)] transition-all duration-1000"
+                        style={{ width: `${game.progress}%` }}
+                      />
+                    </div>
+
+                    <button
+                      type="button"
+                      className="w-full bg-white text-black font-bold py-4 rounded-2xl hover:bg-blue-600 hover:text-white transition-all duration-300 text-[10px] uppercase tracking-[0.25em] shadow-lg"
+                    >
+                      Ver Trofeos
+                    </button>
+                  </div>
+                </div>
               </Card>
             ))}
           </div>
@@ -66,7 +98,7 @@ export default async function DashboardPage() {
     if (error instanceof PSNConfigurationError) {
       return (
         <div className="min-h-screen flex items-center justify-center bg-black text-white p-4">
-          <div className="text-center space-y-4 border border-red-900/50 p-8 rounded-lg bg-red-950/10">
+          <div className="text-center spa ce-y-4 border border-red-900/50 p-8 rounded-lg bg-red-950/10">
             <h2 className="text-2xl font-bold text-red-500">
               Error de Configuración
             </h2>

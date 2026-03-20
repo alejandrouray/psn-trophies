@@ -25,7 +25,7 @@ export async function getRecentTrophies(): Promise<RecentTrophiesResponse> {
   const { trophyTitles, totalItemCount } = await getUserTitles(
     authorization,
     'me',
-    { limit: 10 },
+    { limit: 15 },
   )
 
   return {

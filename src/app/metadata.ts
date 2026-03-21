@@ -14,7 +14,4 @@ export const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Trophy Hub',
   description: 'Explore your PlayStation Network trophy collection.',
-  icons: {
-    icon: '/favicon.svg',
-  },
 }

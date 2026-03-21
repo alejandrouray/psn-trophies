@@ -4,32 +4,78 @@
 
 @layer base {
   :root {
-    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
+    /* === Backgrounds === */
+    --background: 224 50% 4%;       /* #05080f — near-black, blue tint */
+    --card: 223 52% 6%;             /* #080d1a — card surface */
+    --popover: 223 52% 6%;
+    --muted: 223 40% 8%;            /* #0c1120 — muted surface */
 
-    --primary: 221 83% 31%;
+    /* === Text === */
+    --foreground: 210 40% 98%;      /* #f0f4ff — slightly blue-tinted white */
+    --card-foreground: 210 40% 98%;
+    --popover-foreground: 210 40% 98%;
+    --muted-foreground: 215 20% 50%; /* #6e7fa3 — blue-tinted medium gray */
+
+    /* === Primary — PlayStation Blue === */
+    --primary: 212 100% 36%;        /* #0057b8 */
     --primary-foreground: 0 0% 100%;
 
-    --border: 0 0% 10%;
-    --input: 0 0% 10%;
+    /* === Secondary === */
+    --secondary: 223 40% 9%;        /* #0d1222 */
+    --secondary-foreground: 210 40% 98%;
 
+    /* === Accent — bright PlayStation blue === */
+    --accent: 212 89% 52%;          /* #1b6feb */
+    --accent-foreground: 0 0% 100%;
+
+    /* === Borders === */
+    --border: 222 47% 11%;          /* #101929 */
+    --input: 222 47% 11%;
+
+    /* === States === */
+    --ring: 212 100% 36%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* === Radius === */
     --radius: 0.5rem;
   }
 }
 
 @theme {
-  --font-sans: var(--font-inter);
-  --color-border: hsl(var(--border));
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Colors */
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  /* Radius */
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
+  /* Animations */
   --duration: 14s;
   --animate-in: animate-in 0.7s ease-out;
   --animate-meteor: meteor 5s linear infinite;

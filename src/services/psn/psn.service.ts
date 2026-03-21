@@ -5,6 +5,7 @@ import {
   getUserTitles,
   getUserTrophyProfileSummary,
 } from 'psn-api'
+import { logger } from '@lib/logger'
 import { PSNConfigurationError } from './psn.errors'
 import type { DashboardData, RecentTrophiesResponse } from './psn.types'
 
@@ -39,6 +40,10 @@ export async function getDashboardData(): Promise<DashboardData> {
     getProfileFromAccountId(authorization, trophySummary.accountId),
     getUserTitles(authorization, 'me', { limit: 15 }),
   ])
+
+  if (profileResult.status === 'rejected') {
+    logger.warn('getProfileFromAccountId failed — rendering without profile', profileResult.reason)
+  }
 
   const profile =
     profileResult.status === 'fulfilled' ? profileResult.value : null

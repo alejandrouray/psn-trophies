@@ -30,13 +30,18 @@ const TROPHY_TYPES = [
   { key: 'bronze', label: 'Bronze', color: '#CD7F32', icon: '🥉' },
 ] as const
 
-export function DashboardHeader({ profile, trophySummary }: DashboardHeaderProps) {
+export function DashboardHeader({
+  profile,
+  trophySummary,
+}: DashboardHeaderProps) {
   const { trophyLevel, progress, tier, earnedTrophies } = trophySummary
 
   const grade = TIER_GRADE(tier)
   const tierColor = TIER_COLOR[grade]
   const tierLabel = TIER_LABEL[grade]
   const nextLevel = Number(trophyLevel) + 1
+
+  console.log('profile', profile)
 
   const onlineId = profile?.onlineId ?? 'PlayStation User'
   const isPlus = profile?.isPlus ?? false

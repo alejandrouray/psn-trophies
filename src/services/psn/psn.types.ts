@@ -10,7 +10,7 @@ export interface RecentTrophiesResponse {
 }
 
 export interface DashboardData {
-  profile: ProfileFromAccountIdResponse
+  profile: ProfileFromAccountIdResponse | null
   trophySummary: UserTrophyProfileSummaryResponse
   titles: TrophyTitle[]
   totalItemCount: number

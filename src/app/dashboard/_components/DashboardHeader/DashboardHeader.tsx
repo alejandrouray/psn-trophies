@@ -31,19 +31,19 @@ const TROPHY_TYPES = [
 ] as const
 
 export function DashboardHeader({ profile, trophySummary }: DashboardHeaderProps) {
-  const { onlineId, avatars, isPlus } = profile
   const { trophyLevel, progress, tier, earnedTrophies } = trophySummary
 
   const grade = TIER_GRADE(tier)
   const tierColor = TIER_COLOR[grade]
   const tierLabel = TIER_LABEL[grade]
-
-  const avatarUrl =
-    avatars.find((a) => a.size === 'xl')?.url ??
-    avatars.find((a) => a.size === 'l')?.url ??
-    avatars[avatars.length - 1]?.url
-
   const nextLevel = Number(trophyLevel) + 1
+
+  const onlineId = profile?.onlineId ?? 'PlayStation User'
+  const isPlus = profile?.isPlus ?? false
+  const avatarUrl =
+    profile?.avatars.find((a) => a.size === 'xl')?.url ??
+    profile?.avatars.find((a) => a.size === 'l')?.url ??
+    profile?.avatars[profile.avatars.length - 1]?.url
 
   return (
     <section
@@ -69,7 +69,7 @@ export function DashboardHeader({ profile, trophySummary }: DashboardHeaderProps
             }}
           >
             <div className="rounded-full overflow-hidden size-16 md:size-20 bg-muted">
-              {avatarUrl && (
+              {avatarUrl ? (
                 <Image
                   src={avatarUrl}
                   alt={`${onlineId}'s avatar`}
@@ -78,6 +78,13 @@ export function DashboardHeader({ profile, trophySummary }: DashboardHeaderProps
                   className="object-cover size-full"
                   priority
                 />
+              ) : (
+                <div
+                  className="size-full flex items-center justify-center text-2xl"
+                  aria-hidden="true"
+                >
+                  🎮
+                </div>
               )}
             </div>
           </div>

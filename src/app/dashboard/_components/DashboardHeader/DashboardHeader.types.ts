@@ -4,6 +4,6 @@ import type {
 } from 'psn-api'
 
 export interface DashboardHeaderProps {
-  profile: ProfileFromAccountIdResponse
+  profile: ProfileFromAccountIdResponse | null
   trophySummary: UserTrophyProfileSummaryResponse
 }

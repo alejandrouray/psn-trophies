@@ -83,6 +83,35 @@ import { LandingHero } from '@app/_components/Landing'
 
 ---
 
+# Code breathing room
+
+Functions and blocks must breathe. Use blank lines to separate logical steps within a function — guard clauses, main logic, and return value are distinct stages.
+
+```ts
+// ❌ BAD — aglomerado, difícil de escanear
+async function authorize() {
+  const npsso = process.env.PSN_NPSSO
+  if (!npsso) throw new PSNConfigurationError()
+  const accessCode = await exchangeNpssoForAccessCode(npsso)
+  const { accessToken } = await exchangeAccessCodeForAuthTokens(accessCode)
+  return { accessToken }
+}
+
+// ✅ GOOD — cada etapa respira
+async function authorize() {
+  const npsso = process.env.PSN_NPSSO
+
+  if (!npsso) throw new PSNConfigurationError()
+
+  const accessCode = await exchangeNpssoForAccessCode(npsso)
+  const { accessToken } = await exchangeAccessCodeForAuthTokens(accessCode)
+
+  return { accessToken }
+}
+```
+
+---
+
 # Code comments
 
 Do not add comments that narrate what the code does. Well-named functions, variables and components are self-documenting.

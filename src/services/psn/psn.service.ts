@@ -10,9 +10,12 @@ import type { DashboardData, RecentTrophiesResponse } from './psn.types'
 
 async function authorize() {
   const npsso = process.env.PSN_NPSSO
+
   if (!npsso) throw new PSNConfigurationError()
+
   const accessCode = await exchangeNpssoForAccessCode(npsso)
   const { accessToken } = await exchangeAccessCodeForAuthTokens(accessCode)
+
   return { accessToken }
 }
 
@@ -32,10 +35,18 @@ export async function getDashboardData(): Promise<DashboardData> {
   // Trophy summary first — contains accountId needed for profile fetch
   const trophySummary = await getUserTrophyProfileSummary(authorization, 'me')
 
-  const [profile, { trophyTitles, totalItemCount }] = await Promise.all([
+  const [profileResult, titlesResult] = await Promise.allSettled([
     getProfileFromAccountId(authorization, trophySummary.accountId),
     getUserTitles(authorization, 'me', { limit: 15 }),
   ])
+
+  const profile =
+    profileResult.status === 'fulfilled' ? profileResult.value : null
+
+  const { trophyTitles, totalItemCount } =
+    titlesResult.status === 'fulfilled'
+      ? titlesResult.value
+      : { trophyTitles: [], totalItemCount: 0 }
 
   return {
     profile,

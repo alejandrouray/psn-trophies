@@ -1,0 +1,142 @@
+import {
+  Badge,
+  Button,
+  Card,
+  type GameCardFooterProps,
+  type GameCardHeaderProps,
+  type GameCardImageProps,
+  type GameCardProps,
+} from '@components'
+import { cn } from '@lib/utils'
+import { Clock, Trophy } from 'lucide-react'
+import Image from 'next/image'
+
+function GameCardImage({ src, alt, priority }: GameCardImageProps) {
+  return (
+    <figure
+      className="relative aspect-4/5 w-full shrink-0 overflow-hidden"
+      style={{
+        maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+        WebkitMaskImage:
+          'linear-gradient(to bottom, black 60%, transparent 100%)',
+      }}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        priority={priority}
+        fill
+        className="object-cover object-top transition-transform duration-700 group-hover:scale-110"
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+      />
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black via-black/90 to-transparent z-10" />
+    </figure>
+  )
+}
+
+function GameCardHeader({ title, lastUpdated, dateRaw }: GameCardHeaderProps) {
+  return (
+    <header className="space-y-1 mb-6">
+      <h3 className="text-2xl font-bold text-white tracking-tight leading-tight">
+        {title}
+      </h3>
+      <div className="flex items-center gap-1.5 text-zinc-500">
+        <Clock className="w-3 h-3" aria-hidden="true" />
+        <time
+          dateTime={dateRaw}
+          className="text-[10px] font-mono uppercase tracking-widest"
+        >
+          {lastUpdated}
+        </time>
+      </div>
+    </header>
+  )
+}
+
+function GameCardFooter({ progress, platforms }: GameCardFooterProps) {
+  return (
+    <footer className="mt-auto space-y-5">
+      <div className="flex items-center justify-between">
+        <section
+          className="flex items-center gap-2 bg-zinc-900/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/5"
+          aria-label={`${progress}% completed`}
+        >
+          <Trophy
+            className="w-3.5 h-3.5 text-yellow-500 drop-shadow-[0_0_3px_rgba(234,179,8,0.5)]"
+            aria-hidden="true"
+          />
+          <span className="text-[10px] text-white font-bold tracking-wider">
+            {progress}%
+          </span>
+        </section>
+
+        <div className="flex gap-1.5">
+          {platforms.map((platform) => (
+            <Badge
+              key={platform}
+              variant="outline"
+              className="border-zinc-800 text-zinc-500 text-[9px] uppercase tracking-widest bg-black/20 px-2 py-0.5"
+            >
+              {platform}
+            </Badge>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="relative h-1.5 w-full rounded-full bg-zinc-900/50 border border-white/5 overflow-hidden"
+        role="progressbar"
+        aria-valuenow={progress}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
+        <div
+          className={cn(
+            'h-full bg-blue-600 transition-all duration-1000 ease-out rounded-full relative',
+            'shadow-[0_0_15px_rgba(37,99,235,0.8)]',
+            'before:absolute before:top-0 before:left-0 before:h-1px before:w-full before:bg-white/20',
+            'after:absolute after:inset-0 after:bg-blue-400 after:blur-xs after:opacity-40',
+          )}
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      <Button variant="psn" size="lg" className="w-full">
+        View Trophies
+      </Button>
+    </footer>
+  )
+}
+
+export function GameCard({ game, index }: GameCardProps) {
+  const isPriority = index < 6
+  const lastUpdated = new Date(game.lastUpdatedDateTime).toLocaleDateString()
+
+  return (
+    <Card
+      asChild
+      className="relative flex flex-col h-full overflow-hidden group border-none bg-[#030303] rounded-3xl transition-all duration-700 hover:shadow-2xl hover:shadow-blue-500/10 p-0 animate-in fade-in zoom-in-95 hover:scale-[1.02] hover:-translate-y-2 ease-out"
+      style={{ animationDelay: `${index * 100}ms` }}
+    >
+      <article className="flex flex-col flex-1">
+        <GameCardImage
+          src={game.trophyTitleIconUrl}
+          alt={`Cover of ${game.trophyTitleName}`}
+          priority={isPriority}
+        />
+
+        <div className="flex flex-col flex-1 p-8 pt-0 -mt-18 z-10 relative">
+          <GameCardHeader
+            title={game.trophyTitleName}
+            lastUpdated={lastUpdated}
+            dateRaw={game.lastUpdatedDateTime}
+          />
+          <GameCardFooter
+            progress={game.progress}
+            platforms={game.trophyTitlePlatform?.split(',') ?? []}
+          />
+        </div>
+      </article>
+    </Card>
+  )
+}

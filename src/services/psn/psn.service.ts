@@ -1,3 +1,4 @@
+import { logger } from '@lib/logger'
 import {
   exchangeAccessCodeForAuthTokens,
   exchangeNpssoForAccessCode,
@@ -5,7 +6,6 @@ import {
   getUserTitles,
   getUserTrophyProfileSummary,
 } from 'psn-api'
-import { logger } from '@lib/logger'
 import { PSNConfigurationError } from './psn.errors'
 import type { DashboardData, RecentTrophiesResponse } from './psn.types'
 
@@ -42,7 +42,10 @@ export async function getDashboardData(): Promise<DashboardData> {
   ])
 
   if (profileResult.status === 'rejected') {
-    logger.warn('getProfileFromAccountId failed — rendering without profile', profileResult.reason)
+    logger.warn(
+      'getProfileFromAccountId failed — rendering without profile',
+      profileResult.reason,
+    )
   }
 
   const profile =

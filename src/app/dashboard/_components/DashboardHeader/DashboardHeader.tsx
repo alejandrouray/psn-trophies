@@ -41,8 +41,6 @@ export function DashboardHeader({
   const tierLabel = TIER_LABEL[grade]
   const nextLevel = Number(trophyLevel) + 1
 
-  console.log('profile', profile)
-
   const onlineId = profile?.onlineId ?? 'PlayStation User'
   const isPlus = profile?.isPlus ?? false
   const avatarUrl =

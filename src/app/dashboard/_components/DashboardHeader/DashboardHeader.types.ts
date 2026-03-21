@@ -1,17 +1,9 @@
 import type {
   ProfileFromAccountIdResponse,
-  TrophyTitle,
   UserTrophyProfileSummaryResponse,
 } from 'psn-api'
 
-export interface RecentTrophiesResponse {
-  titles: TrophyTitle[]
-  totalItemCount: number
-}
-
-export interface DashboardData {
+export interface DashboardHeaderProps {
   profile: ProfileFromAccountIdResponse
   trophySummary: UserTrophyProfileSummaryResponse
-  titles: TrophyTitle[]
-  totalItemCount: number
 }

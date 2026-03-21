@@ -81,6 +81,17 @@
   --animate-meteor: meteor 5s linear infinite;
 }
 
+.bg-landing-glow {
+  background: radial-gradient(ellipse 80% 50% at 50% 60%, rgba(0, 87, 184, 0.12), transparent);
+}
+
+.bg-landing-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
 .animate-shine-border {
   animation: shine-border var(--duration, 14s) infinite linear;
 }

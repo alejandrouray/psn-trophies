@@ -58,6 +58,31 @@ Format: `<emoji> <type>: <description in English, lowercase>`
 
 ---
 
+# Import aliases and barrel files
+
+Always use path aliases instead of relative paths. Available aliases:
+
+| Alias | Resolves to |
+|-------|-------------|
+| `@app/*` | `src/app/*` |
+| `@components` | `src/components/index.ts` |
+| `@components/*` | `src/components/*` |
+| `@services/*` | `src/services/*` |
+| `@lib/*` | `src/lib/*` |
+| `@types` | `src/types/index.ts` |
+
+Every folder that exports code must have an `index.ts` that re-exports its modules with `export * from`. Consumers always import from the folder, never from the file directly.
+
+```ts
+// ❌ BAD
+import { LandingHero } from '@app/_components/Landing/LandingHero'
+
+// ✅ GOOD
+import { LandingHero } from '@app/_components/Landing'
+```
+
+---
+
 # Code comments
 
 Do not add comments that narrate what the code does. Well-named functions, variables and components are self-documenting.
@@ -75,4 +100,62 @@ const trophies = await getRecentTrophies()
 // ✅ GOOD — explains a non-obvious constraint
 // PSN API returns at most 500 titles; we limit to 15 to stay within the free tier rate limit
 const trophies = await getRecentTrophies({ limit: 15 })
+```
+
+---
+
+# Semantic HTML and accessibility
+
+Use semantic HTML elements for content. Reserve `<div>` and `<span>` for purely decorative or layout-only elements with no content meaning.
+
+## Landmark elements
+
+| Use | When |
+|-----|------|
+| `<main>` | Primary page content (once per page) |
+| `<section aria-labelledby="...">` | Standalone content section with a heading |
+| `<article>` | Self-contained content (a card, a post) |
+| `<header>` / `<footer>` | Section or page header/footer |
+| `<nav aria-label="...">` | Navigation landmarks |
+
+## Decorative elements
+
+Purely decorative elements (background layers, visual symbols, icons without text) must be hidden from assistive technology:
+
+```tsx
+// ❌ BAD — screen reader announces "triangle circle cross square"
+<div>
+  <span>△</span>
+  <span>○</span>
+</div>
+
+// ✅ GOOD — hidden from assistive technology
+<div aria-hidden="true" role="presentation">
+  <span aria-hidden="true">△</span>
+  <span aria-hidden="true">○</span>
+</div>
+```
+
+## Visual-only line breaks
+
+Never use `<br />` for visual line breaks. Control line wrapping with CSS (`block`, `whitespace`, etc.).
+
+```tsx
+// ❌ BAD — presentational markup in HTML
+<h1>Trophy<br /><span>Hub</span></h1>
+
+// ✅ GOOD — visual break via CSS
+<h1>Trophy <span className="block">Hub</span></h1>
+```
+
+## Tailwind and long class strings
+
+When a JSX element accumulates too many Tailwind classes, extract it into a named sub-component. Complex arbitrary CSS values (gradients, grid patterns) belong in named classes in `globals.css`, not inline as Tailwind arbitrary values.
+
+```tsx
+// ❌ BAD — unreadable inline arbitrary CSS
+<div className="bg-[radial-gradient(ellipse_80%_50%_at_50%_60%,rgba(0,87,184,0.12),transparent)]" />
+
+// ✅ GOOD — named class in globals.css
+<div className="bg-landing-glow" />
 ```

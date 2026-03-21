@@ -1,4 +1,5 @@
 import './globals.css'
+import { ViewTransition } from 'react'
 import { geistMono, geistSans, metadata } from './metadata'
 
 export { metadata }
@@ -17,7 +18,7 @@ export default function RootLayout({
         className="min-h-full flex flex-col text-foreground"
         suppressHydrationWarning={true}
       >
-        {children}
+        <ViewTransition>{children}</ViewTransition>
       </body>
     </html>
   )

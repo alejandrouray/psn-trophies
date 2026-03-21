@@ -81,6 +81,35 @@
   --animate-meteor: meteor 5s linear infinite;
 }
 
+@keyframes vt-fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes vt-fade-slide-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-slide-in 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+::view-transition-old(root) {
+  animation: vt-fade-slide-out 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
 .bg-landing-glow {
   background: radial-gradient(ellipse 80% 50% at 50% 60%, rgba(0, 87, 184, 0.12), transparent);
 }

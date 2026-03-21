@@ -40,6 +40,12 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
+    /* === PlayStation trophy tier colors === */
+    --color-trophy-bronze: #CD7F32;
+    --color-trophy-silver: #C0C0C0;
+    --color-trophy-gold: #FFD700;
+    --color-trophy-platinum: #B0C4DE;
+
     /* === Radius === */
     --radius: 0.5rem;
   }

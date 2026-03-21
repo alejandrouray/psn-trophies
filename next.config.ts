@@ -7,18 +7,9 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**.psncdn.com',
-      },
-      {
-        protocol: 'https',
-        hostname: '**.playstation.net',
-      },
-      {
-        protocol: 'https',
-        hostname: '**.np.community.playstation.net',
-      },
+      { hostname: '**.psncdn.com' },
+      { hostname: '**.playstation.net' },
+      { hostname: '**.np.community.playstation.net' },
     ],
   },
 }

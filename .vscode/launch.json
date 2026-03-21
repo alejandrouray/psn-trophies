@@ -2,28 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Next.js: attach server",
+      "name": "Next.js: debug",
       "type": "node",
-      "request": "attach",
-      "port": 9229,
-      "skipFiles": ["<node_internals>/**"],
-      "sourceMaps": true,
-      "resolveSourceMapLocations": [
-        "${workspaceFolder}/**",
-        "!**/node_modules/**"
-      ]
-    },
-    {
-      "name": "Next.js: attach worker",
-      "type": "node",
-      "request": "attach",
-      "port": 9230,
-      "skipFiles": ["<node_internals>/**"],
-      "sourceMaps": true,
-      "resolveSourceMapLocations": [
-        "${workspaceFolder}/**",
-        "!**/node_modules/**"
-      ]
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
     }
   ]
 }

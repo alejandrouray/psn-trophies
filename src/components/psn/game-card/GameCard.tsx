@@ -1,5 +1,5 @@
 import { Badge, Button, ShineBorder } from '@components'
-import { cn } from '@lib/utils'
+import { cn } from '@lib'
 import { Clock, Trophy } from 'lucide-react'
 import Image from 'next/image'
 import type {

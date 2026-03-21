@@ -1,6 +1,6 @@
 'use client'
 
-import { cn } from '@lib/utils'
+import { cn } from '@lib'
 import type { ShineBorderProps } from './ShineBorder.types'
 
 export function ShineBorder({

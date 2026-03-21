@@ -24,6 +24,7 @@
       "@services/*": ["./src/services/*"],
       "@components": ["./src/components/index.ts"],
       "@components/*": ["./src/components/*"],
+      "@lib": ["./src/lib/index.ts"],
       "@lib/*": ["./src/lib/*"],
       "@types": ["./src/types/index.ts"],
       "@types/*": ["./src/types/*"]

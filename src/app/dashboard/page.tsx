@@ -1,10 +1,10 @@
 import { ErrorState, GameCard } from '@components'
-import { getDashboardData, PSNConfigurationError } from '@services/psn'
+import { getUserOverview, PSNConfigurationError } from '@services/psn'
 import { DashboardHeader } from './_components/DashboardHeader'
 
 export default async function DashboardPage() {
   try {
-    const { profile, trophySummary, titles } = await getDashboardData()
+    const { profile, trophySummary, titles } = await getUserOverview()
 
     return (
       <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-secondary via-background to-background p-6 md:p-12">

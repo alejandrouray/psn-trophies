@@ -1,4 +1,4 @@
-import { cn } from '@lib/utils'
+import { cn } from '@lib'
 import { Slot } from 'radix-ui'
 import type { BadgeProps } from './Badge.types'
 import { badgeVariants } from './Badge.variants'

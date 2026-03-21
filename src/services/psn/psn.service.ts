@@ -1,4 +1,5 @@
-import { logger } from '@lib/logger'
+import { logger } from '@lib'
+import type { PSNProfile } from '@types'
 import {
   exchangeAccessCodeForAuthTokens,
   exchangeNpssoForAccessCode,
@@ -6,8 +7,21 @@ import {
   getUserTitles,
   getUserTrophyProfileSummary,
 } from 'psn-api'
+import { PSN_ME, TITLES_LIMIT } from './psn.constants'
 import { PSNConfigurationError } from './psn.errors'
-import type { DashboardData, RecentTrophiesResponse } from './psn.types'
+import type { UserOverview } from './psn.types'
+
+function isFulfilled<T>(
+  result: PromiseSettledResult<T>,
+): result is PromiseFulfilledResult<T> {
+  return result.status === 'fulfilled'
+}
+
+function isRejected<T>(
+  result: PromiseSettledResult<T>,
+): result is PromiseRejectedResult {
+  return result.status === 'rejected'
+}
 
 async function authorize() {
   const npsso = process.env.PSN_NPSSO
@@ -20,41 +34,31 @@ async function authorize() {
   return { accessToken }
 }
 
-export async function getRecentTrophies(): Promise<RecentTrophiesResponse> {
-  const authorization = await authorize()
-  const { trophyTitles, totalItemCount } = await getUserTitles(
-    authorization,
-    'me',
-    { limit: 15 },
-  )
-  return { titles: trophyTitles ?? [], totalItemCount: totalItemCount ?? 0 }
-}
-
-export async function getDashboardData(): Promise<DashboardData> {
+export async function getUserOverview(): Promise<UserOverview> {
   const authorization = await authorize()
 
   // Trophy summary first — contains accountId needed for profile fetch
-  const trophySummary = await getUserTrophyProfileSummary(authorization, 'me')
+  const trophySummary = await getUserTrophyProfileSummary(authorization, PSN_ME)
 
   const [profileResult, titlesResult] = await Promise.allSettled([
     getProfileFromAccountId(authorization, trophySummary.accountId),
-    getUserTitles(authorization, 'me', { limit: 15 }),
+    getUserTitles(authorization, PSN_ME, { limit: TITLES_LIMIT }),
   ])
 
-  if (profileResult.status === 'rejected') {
+  if (isRejected(profileResult)) {
     logger.warn(
       'getProfileFromAccountId failed — rendering without profile',
       profileResult.reason,
     )
   }
 
-  const profile =
-    profileResult.status === 'fulfilled' ? profileResult.value : null
+  const profile = isFulfilled(profileResult)
+    ? (profileResult.value as PSNProfile)
+    : null
 
-  const { trophyTitles, totalItemCount } =
-    titlesResult.status === 'fulfilled'
-      ? titlesResult.value
-      : { trophyTitles: [], totalItemCount: 0 }
+  const { trophyTitles, totalItemCount } = isFulfilled(titlesResult)
+    ? titlesResult.value
+    : { trophyTitles: [], totalItemCount: 0 }
 
   return {
     profile,

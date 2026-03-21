@@ -1,9 +1,7 @@
-import type {
-  ProfileFromAccountIdResponse,
-  UserTrophyProfileSummaryResponse,
-} from 'psn-api'
+import type { PSNProfile } from '@types'
+import type { UserTrophyProfileSummaryResponse } from 'psn-api'
 
 export interface DashboardHeaderProps {
-  profile: ProfileFromAccountIdResponse | null
+  profile: PSNProfile | null
   trophySummary: UserTrophyProfileSummaryResponse
 }

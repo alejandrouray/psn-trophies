@@ -28,6 +28,7 @@ Each component lives in its own PascalCase folder:
 src/components/ui/ComponentName/
 ├── ComponentName.types.ts      ← always
 ├── ComponentName.tsx           ← always (named export, no default)
+├── ComponentName.constants.ts  ← domain constants, lookup maps, static config
 ├── ComponentName.variants.ts   ← only if the component uses CVA
 └── index.ts                    ← re-exports everything with `export * from`
 ```
@@ -68,6 +69,7 @@ Always use path aliases instead of relative paths. Available aliases:
 | `@components` | `src/components/index.ts` |
 | `@components/*` | `src/components/*` |
 | `@services/*` | `src/services/*` |
+| `@lib` | `src/lib/index.ts` |
 | `@lib/*` | `src/lib/*` |
 | `@types` | `src/types/index.ts` |
 
@@ -83,9 +85,21 @@ import { LandingHero } from '@app/_components/Landing'
 
 ---
 
-# Code breathing room
+# Where types live
 
-Functions and blocks must breathe. Use blank lines to separate logical steps within a function — guard clauses, main logic, and return value are distinct stages.
+Types are split by **consumer**, not by origin.
+
+| Location | What goes there |
+|----------|----------------|
+| `src/types/` | Domain types that the UI touches directly: primitives, enums, shared interfaces (`TierGrade`, `PSNImage`, `PSNGame`...) |
+| `src/services/*/psn.types.ts` | Service I/O types and intersections that depend on the service layer. If the UI only sees them indirectly (through props or page data), they can stay here |
+| `ComponentName.types.ts` | Component-specific props and local interfaces |
+
+The rule of thumb: **if a component has to import a type, it should come from `src/types/` or a component's own `.types.ts` — never reach into a service folder.**
+
+---
+
+# Code breathing room
 
 ```ts
 // ❌ BAD — aglomerado, difícil de escanear
@@ -108,6 +122,83 @@ async function authorize() {
 
   return { accessToken }
 }
+```
+
+---
+
+# File organization within a module
+
+When a file contains constants, functions, and data structures, order them by dependency — simpler things first, composite things last. Use section comments to make the structure scannable:
+
+```ts
+// --- Base constants ---
+// Primitive values and lookup maps that everything else depends on.
+
+// --- Utility functions ---
+// Pure functions that transform data. No cross-dependencies between them.
+
+// --- Derived data ---
+// Structures that combine base constants and utility functions.
+```
+
+This rule applies to any `.constants.ts`, `.utils.ts`, or similar file.
+
+---
+
+# Where utility functions live
+
+Utility functions are split by **scope**, not by file size.
+
+| File | What goes there |
+|------|----------------|
+| `src/lib/utils.ts` | Truly generic helpers with no domain knowledge (`cn`, `formatCount`) |
+| `src/lib/psn.utils.ts` | PSN-domain helpers that components need but belong to no single component (`resolveAvatarUrl`) |
+| `ComponentName.constants.ts` | Helpers used only by that one component |
+
+The rule of thumb: **if two components would need the same function, it moves up to `src/lib/`. If it's PSN-specific, it goes to `psn.utils.ts`; if it's truly generic, it goes to `utils.ts`.**
+
+```ts
+// ❌ BAD — PSN-domain logic buried in a component's constants file
+// DashboardHeader.constants.ts
+export const resolveAvatarUrl = (profile: AvatarSource) => { ... }
+
+// ✅ GOOD — shared, importable via @lib
+// src/lib/psn.utils.ts
+export function resolveAvatarUrl(profile: AvatarSource) { ... }
+```
+
+---
+
+# Extract logic into named functions
+
+Never let inline logic grow inside a component or a function signature. When an expression spans more than 2-3 lines, extract it into a named function that lives in the `.constants.ts` or `.utils.ts` file.
+
+```tsx
+// ❌ BAD — logic growing inline
+const avatarUrl =
+  profile?.personalDetail?.profilePictures?.find((p) => p.size === 'xl')?.url ??
+  profile?.personalDetail?.profilePictures?.find((p) => p.size === 'l')?.url ??
+  profile?.avatars.find((a) => a.size === 'xl')?.url ??
+  profile?.avatars[profile.avatars.length - 1]?.url
+
+// ✅ GOOD — named function, testable in isolation
+const avatarUrl = profile ? resolveAvatarUrl(profile) : undefined
+```
+
+The same applies to inline type annotations in function signatures — if a parameter type is complex, extract it into a named interface in the `.types.ts` file. **Never declare interfaces inside `.constants.ts` or `.utils.ts`.**
+
+```ts
+// ❌ BAD — interface buried inside .constants.ts
+interface AvatarSource { ... }
+export const resolveAvatarUrl = (profile: AvatarSource) => { ... }
+
+// ✅ GOOD — interface in .types.ts, imported into .constants.ts
+// DashboardHeader.types.ts
+export interface AvatarSource { ... }
+
+// DashboardHeader.constants.ts
+import type { AvatarSource } from './DashboardHeader.types'
+export const resolveAvatarUrl = (profile: AvatarSource) => { ... }
 ```
 
 ---
@@ -149,7 +240,7 @@ Use semantic HTML elements for content. Reserve `<div>` and `<span>` for purely 
 
 ## Decorative elements
 
-Purely decorative elements (background layers, visual symbols, icons without text) must be hidden from assistive technology:
+Purely decorative elements (background layers, visual symbols, icons without text) must be hidden from assistive technology with `aria-hidden="true"`. Do **not** add `role="presentation"` alongside it — they are redundant; `aria-hidden` already removes the element from the accessibility tree entirely.
 
 ```tsx
 // ❌ BAD — screen reader announces "triangle circle cross square"
@@ -158,11 +249,45 @@ Purely decorative elements (background layers, visual symbols, icons without tex
   <span>○</span>
 </div>
 
-// ✅ GOOD — hidden from assistive technology
-<div aria-hidden="true" role="presentation">
+// ❌ BAD — role="presentation" is redundant with aria-hidden
+<div aria-hidden="true" role="presentation" />
+
+// ✅ GOOD — aria-hidden is sufficient
+<div aria-hidden="true">
   <span aria-hidden="true">△</span>
   <span aria-hidden="true">○</span>
 </div>
+```
+
+## Lists of items
+
+When rendering a collection of related items (stats, cards, options), use `<ul>/<li>` — not a series of `<div>`. This communicates structure to assistive technology and allows screen readers to announce item count.
+
+```tsx
+// ❌ BAD — no list semantics
+<div className="flex gap-4">
+  {trophies.map(t => <div key={t.key}>...</div>)}
+</div>
+
+// ✅ GOOD
+<ul className="flex gap-4 list-none">
+  {trophies.map(t => <li key={t.key}>...</li>)}
+</ul>
+```
+
+## Screen reader context for numbers
+
+`aria-label` is only valid on elements with an implicit or explicit ARIA role (buttons, inputs, landmarks…). A bare `<span>` has no role, so `aria-label` is ignored. Use a visually hidden `sr-only` span to add context:
+
+```tsx
+// ❌ BAD — aria-label is invalid on a role-less <span>
+<span aria-label="Level 432" style={{ color }}>432</span>
+
+// ✅ GOOD — sr-only text is read, number is visible
+<span style={{ color }}>
+  <span className="sr-only">Level </span>
+  432
+</span>
 ```
 
 ## Visual-only line breaks
@@ -188,3 +313,38 @@ When a JSX element accumulates too many Tailwind classes, extract it into a name
 // ✅ GOOD — named class in globals.css
 <div className="bg-landing-glow" />
 ```
+
+---
+
+# Service layer naming
+
+Services must be agnostic to their consumers. Name functions and types after **what data they represent**, never after who uses them.
+
+```ts
+// ❌ BAD — couples the service to a specific page
+export async function getDashboardData(): Promise<DashboardData> { ... }
+
+// ✅ GOOD — describes the data, not the consumer
+export async function getUserOverview(): Promise<UserOverview> { ... }
+```
+
+This applies equally to types: `DashboardData` → `UserOverview`, `ProfilePageData` → `UserProfile`, etc.
+
+---
+
+# When to promote a function to lib/
+
+A function moves to `lib/` when **two or more modules need it** — not before. The trigger is demand, not how generic the function looks.
+
+```
+Step 1: function lives in the only file that uses it
+Step 2: a second module needs it → move to lib/utils.ts (generic) or lib/psn.utils.ts (PSN domain)
+```
+
+Moving a function to `lib/` before a second consumer exists adds indirection with no benefit (premature abstraction).
+
+---
+
+# Dead code
+
+Delete exported functions and types with no consumers. Code that is never called is not "potentially useful" — it is noise that misleads future readers and has to be maintained for no reason. `git` preserves history; there is no need to keep unused code as a safety net.

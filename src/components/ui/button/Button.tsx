@@ -1,4 +1,4 @@
-import { cn } from '@lib/utils'
+import { cn } from '@lib'
 import { Slot } from 'radix-ui'
 import type { ButtonProps } from './Button.types'
 import { buttonVariants } from './Button.variants'

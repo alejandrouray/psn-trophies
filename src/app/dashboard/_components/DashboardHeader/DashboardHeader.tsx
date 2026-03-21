@@ -1,34 +1,14 @@
 import { Badge } from '@components'
+import { formatCount, resolveAvatarUrl } from '@lib'
 import Image from 'next/image'
+import {
+  TIER_GRADE,
+  TIER_LABEL,
+  TROPHY_TYPES,
+  tierCssVar,
+  tierMix,
+} from './DashboardHeader.constants'
 import type { DashboardHeaderProps } from './DashboardHeader.types'
-
-const TIER_GRADE = (tier: number) => {
-  if (tier <= 3) return 'bronze'
-  if (tier <= 6) return 'silver'
-  if (tier <= 9) return 'gold'
-  return 'platinum'
-}
-
-const TIER_COLOR: Record<string, string> = {
-  bronze: '#CD7F32',
-  silver: '#C0C0C0',
-  gold: '#FFD700',
-  platinum: '#B0C4DE',
-}
-
-const TIER_LABEL: Record<string, string> = {
-  bronze: 'Bronze',
-  silver: 'Silver',
-  gold: 'Gold',
-  platinum: 'Platinum',
-}
-
-const TROPHY_TYPES = [
-  { key: 'platinum', label: 'Platinum', color: '#B0C4DE', icon: '🏆' },
-  { key: 'gold', label: 'Gold', color: '#FFD700', icon: '🥇' },
-  { key: 'silver', label: 'Silver', color: '#C0C0C0', icon: '🥈' },
-  { key: 'bronze', label: 'Bronze', color: '#CD7F32', icon: '🥉' },
-] as const
 
 export function DashboardHeader({
   profile,
@@ -37,16 +17,13 @@ export function DashboardHeader({
   const { trophyLevel, progress, tier, earnedTrophies } = trophySummary
 
   const grade = TIER_GRADE(tier)
-  const tierColor = TIER_COLOR[grade]
+  const color = tierCssVar(grade)
   const tierLabel = TIER_LABEL[grade]
   const nextLevel = Number(trophyLevel) + 1
 
   const onlineId = profile?.onlineId ?? 'PlayStation User'
   const isPlus = profile?.isPlus ?? false
-  const avatarUrl =
-    profile?.avatars.find((a) => a.size === 'xl')?.url ??
-    profile?.avatars.find((a) => a.size === 'l')?.url ??
-    profile?.avatars[profile.avatars.length - 1]?.url
+  const avatarUrl = profile ? resolveAvatarUrl(profile) : undefined
 
   return (
     <section
@@ -56,10 +33,9 @@ export function DashboardHeader({
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: `radial-gradient(ellipse 55% 120% at 0% 50%, ${tierColor}10, transparent)`,
+          background: `radial-gradient(ellipse 55% 120% at 0% 50%, ${tierMix(grade, 6)}, transparent)`,
         }}
         aria-hidden="true"
-        role="presentation"
       />
 
       <div className="relative flex flex-col md:flex-row md:items-center gap-6 p-6 md:p-8">
@@ -67,8 +43,8 @@ export function DashboardHeader({
           <div
             className="rounded-full p-[2px] shrink-0"
             style={{
-              background: `linear-gradient(135deg, ${tierColor}, ${tierColor}30)`,
-              boxShadow: `0 0 24px ${tierColor}25`,
+              background: `linear-gradient(135deg, ${color}, ${tierMix(grade, 19)})`,
+              boxShadow: `0 0 24px ${tierMix(grade, 15)}`,
             }}
           >
             <div className="rounded-full overflow-hidden size-16 md:size-20 bg-muted">
@@ -118,23 +94,25 @@ export function DashboardHeader({
         />
 
         <div className="space-y-2 shrink-0 min-w-[180px]">
-          <div className="flex items-baseline gap-2">
+          <div className="flex items-center gap-2">
             <span
               className="text-5xl font-extrabold tracking-tighter tabular-nums"
-              style={{ color: tierColor }}
+              style={{ color }}
             >
+              <span className="sr-only">Level </span>
               {trophyLevel}
             </span>
-            <span
-              className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border"
+            <Badge
+              variant="outline"
+              className="text-[10px] font-bold uppercase tracking-widest"
               style={{
-                color: tierColor,
-                borderColor: `${tierColor}40`,
-                background: `${tierColor}12`,
+                color,
+                borderColor: tierMix(grade, 25),
+                background: tierMix(grade, 7),
               }}
             >
               {tierLabel}
-            </span>
+            </Badge>
           </div>
 
           <div
@@ -145,14 +123,17 @@ export function DashboardHeader({
             aria-valuemax={100}
             aria-label={`${progress}% progress to level ${nextLevel}`}
           >
-            <div
-              className="h-full rounded-full transition-all duration-1000"
-              style={{
-                width: `${progress}%`,
-                background: `linear-gradient(90deg, ${tierColor}70, ${tierColor})`,
-                boxShadow: `0 0 8px ${tierColor}50`,
-              }}
-            />
+            {progress > 0 && (
+              <div
+                className="h-full rounded-full transition-all duration-1000"
+                style={{
+                  width: `${progress}%`,
+                  minWidth: '4px',
+                  background: `linear-gradient(90deg, ${tierMix(grade, 44)}, ${color})`,
+                  boxShadow: `0 0 8px ${tierMix(grade, 31)}`,
+                }}
+              />
+            )}
           </div>
 
           <p className="text-muted-foreground font-mono text-[10px]">
@@ -165,26 +146,24 @@ export function DashboardHeader({
           aria-hidden="true"
         />
 
-        <div className="flex items-center gap-5 md:gap-8 flex-wrap">
-          {TROPHY_TYPES.map(({ key, label, color, icon }) => (
-            <div key={key} className="flex flex-col items-center gap-1">
+        <ul className="flex items-center gap-5 md:gap-8 flex-wrap list-none">
+          {TROPHY_TYPES.map(({ key, label, color: trophyColor, icon }) => (
+            <li key={key} className="flex flex-col items-center gap-1">
               <span className="text-xl" aria-hidden="true">
                 {icon}
               </span>
               <span
                 className="text-2xl font-extrabold tabular-nums tracking-tight"
-                style={{ color }}
+                style={{ color: trophyColor }}
               >
-                {Number(
-                  earnedTrophies[key as keyof typeof earnedTrophies],
-                ).toLocaleString()}
+                {formatCount(earnedTrophies[key])}
               </span>
               <span className="text-muted-foreground font-mono text-[9px] uppercase tracking-widest">
                 {label}
               </span>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   )

@@ -1,0 +1,29 @@
+---
+description: Dónde ubicar cada tipo de componente dentro de src/components/
+globs: src/components/**
+alwaysApply: false
+---
+
+# Organización de componentes
+
+```
+src/components/
+├── ui/          ← Componentes atómicos y de diseño (Button, Badge, Input...)
+├── magic-ui/    ← Componentes de Magic UI (ShineBorder, ...)
+├── shared/      ← Componentes genéricos reutilizables (ErrorState, Spinner, EmptyState...)
+└── psn/         ← Componentes de negocio específicos del dominio PSN (GameCard, TrophyList...)
+```
+
+## Criterio de ubicación
+
+| Carpeta | Cuándo usarla |
+|---------|---------------|
+| `ui/` | Primitivos de UI sin lógica de negocio, generalmente basados en CVA o Radix |
+| `magic-ui/` | Componentes provenientes de [Magic UI](https://magicui.design) |
+| `shared/` | Componentes genéricos reutilizables entre dominios (errores, estados vacíos, loaders...) |
+| `psn/` | Componentes que modelan conceptos del dominio: trofeos, juegos, perfiles PSN |
+
+## Regla de oro
+
+Si el componente podría vivir en cualquier otro proyecto → `ui/` o `shared/`.  
+Si solo tiene sentido en este proyecto → `psn/`.

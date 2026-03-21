@@ -1,0 +1,50 @@
+---
+description: Estructura de carpeta para componentes UI reutilizables
+globs: src/components/**
+alwaysApply: false
+---
+
+# Estructura de componentes UI
+
+Cada componente UI vive en su propia carpeta con nombre en PascalCase. La estructura base es:
+
+```
+src/components/ui/ComponentName/
+├── ComponentName.types.ts      ← TypeScript types (siempre)
+├── ComponentName.tsx           ← Componente (siempre)
+├── ComponentName.variants.ts   ← CVA variants (solo si el componente tiene variantes)
+└── index.ts                    ← Re-exporta todo (siempre)
+```
+
+## Reglas
+
+- `ComponentName.types.ts` — exporta `ComponentNameProps`. Si hay variantes, también exporta `ComponentNameVariantProps`
+- `ComponentName.tsx` — función nombrada (no default export), importa desde sus archivos hermanos, usa `@lib/utils` para `cn`
+- `ComponentName.variants.ts` — **opcional**. Solo créalo si el componente usa CVA. Exporta `componentNameVariants`
+- `index.ts` — re-exporta todos los módulos presentes con `export * from`
+
+## Ejemplo: Badge
+
+```ts
+// Badge.variants.ts
+import { cva } from 'class-variance-authority'
+export const badgeVariants = cva('...', { variants: { variant: { ... } } })
+
+// Badge.types.ts
+import type { VariantProps } from 'class-variance-authority'
+import type { badgeVariants } from './Badge.variants'
+export type BadgeVariantProps = VariantProps<typeof badgeVariants>
+export type BadgeProps = React.ComponentProps<'span'> & BadgeVariantProps & { asChild?: boolean }
+
+// Badge.tsx
+import { cn } from '@lib/utils'
+import { Slot } from 'radix-ui'
+import type { BadgeProps } from './Badge.types'
+import { badgeVariants } from './Badge.variants'
+export function Badge({ className, variant = 'default', asChild = false, ...props }: BadgeProps) { ... }
+
+// index.ts
+export * from './Badge'
+export * from './Badge.types'
+export * from './Badge.variants'
+```

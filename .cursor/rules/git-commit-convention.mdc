@@ -1,0 +1,32 @@
+---
+description: Convención de mensajes de commit para este repositorio
+alwaysApply: true
+---
+
+# Mensajes de commit
+
+Formato obligatorio:
+
+```
+<emoji> <tipo>: <descripción en inglés, minúsculas>
+```
+
+## Emojis y tipos permitidos
+
+| Emoji | Tipo | Cuándo usarlo |
+|-------|------|---------------|
+| 🚀 | `feat` | Nueva funcionalidad |
+| 🔨 | `refactor` | Reestructura de código sin cambio funcional |
+| 🔧 | `chore` | Tareas de mantenimiento, instalación de deps, config |
+| 🐛 | `fix` | Corrección de bugs |
+| 💄 | `style` | Cambios visuales / estilos |
+| 📝 | `docs` | Documentación |
+| ✅ | `test` | Tests |
+
+## Reglas
+
+- La descripción va siempre en **inglés**
+- Todo en **minúsculas** salvo nombres propios
+- Sin punto final
+- Máximo ~72 caracteres
+- Sin scope entre paréntesis (no usar `feat(auth): ...`)

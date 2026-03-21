@@ -1,4 +1,4 @@
-import { Badge, Button, Card } from '@components'
+import { Badge, Button, ShineBorder } from '@components'
 import { cn } from '@lib/utils'
 import { Clock, Trophy } from 'lucide-react'
 import Image from 'next/image'
@@ -24,7 +24,7 @@ function GameCardImage({ src, alt, priority }: GameCardImageProps) {
         alt={alt}
         priority={priority}
         fill
-        className="object-cover object-top transition-transform duration-700 group-hover:scale-110"
+        className="object-top transition-transform duration-700 group-hover:scale-110"
         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
       />
       <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black via-black/90 to-transparent z-10" />
@@ -111,12 +111,11 @@ export function GameCard({ game, index }: GameCardProps) {
   const lastUpdated = new Date(game.lastUpdatedDateTime).toLocaleDateString()
 
   return (
-    <Card
-      asChild
-      className="relative flex flex-col h-full overflow-hidden group border-none bg-[#030303] rounded-3xl transition-all duration-700 hover:shadow-2xl hover:shadow-blue-500/10 p-0 animate-in fade-in zoom-in-95 hover:scale-[1.02] hover:-translate-y-2 ease-out"
-      style={{ animationDelay: `${index * 100}ms` }}
+    <div
+      className="relative transition-all duration-700 hover:scale-[1.02] hover:-translate-y-2 ease-out group animate-in fade-in zoom-in-95 h-full"
+      style={{ animationDelay: `${index * 50}ms` }}
     >
-      <article className="flex flex-col flex-1">
+      <article className="relative flex flex-col h-full w-full bg-[#030303] rounded-[24px] overflow-hidden">
         <GameCardImage
           src={game.trophyTitleIconUrl}
           alt={`Cover of ${game.trophyTitleName}`}
@@ -134,7 +133,13 @@ export function GameCard({ game, index }: GameCardProps) {
             platforms={game.trophyTitlePlatform?.split(',') ?? []}
           />
         </div>
+
+        <ShineBorder
+          borderWidth={1}
+          duration={14}
+          shineColor={['#E5E7EB', '#3B82F6', '#FFFFFF']}
+        />
       </article>
-    </Card>
+    </div>
   )
 }

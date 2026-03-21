@@ -5,8 +5,6 @@ export default async function DashboardPage() {
   try {
     const { titles } = await getRecentTrophies()
 
-    console.log(titles)
-
     return (
       <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-zinc-900 via-black to-black text-white p-6 md:p-12">
         <div className="max-w-6xl mx-auto">

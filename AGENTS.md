@@ -55,3 +55,24 @@ Format: `<emoji> <type>: <description in English, lowercase>`
 - No trailing period
 - Max ~72 characters
 - No scope in parentheses
+
+---
+
+# Code comments
+
+Do not add comments that narrate what the code does. Well-named functions, variables and components are self-documenting.
+
+Only add a comment when it explains something the code cannot express by itself:
+- A non-obvious trade-off or architectural decision
+- A workaround for a bug or external limitation
+- A business rule that isn't evident from the logic
+
+```ts
+// ❌ BAD — narrates the obvious
+// Fetch the user's trophies
+const trophies = await getRecentTrophies()
+
+// ✅ GOOD — explains a non-obvious constraint
+// PSN API returns at most 500 titles; we limit to 15 to stay within the free tier rate limit
+const trophies = await getRecentTrophies({ limit: 15 })
+```

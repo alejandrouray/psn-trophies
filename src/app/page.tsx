@@ -1,53 +1,39 @@
-import { ErrorState, GameCard } from '@components'
-import { getRecentTrophies, PSNConfigurationError } from '@services/psn'
+import { Button } from '@components'
+import Link from 'next/link'
 
-export default async function DashboardPage() {
-  try {
-    const { titles } = await getRecentTrophies()
+export default function LandingPage() {
+  return (
+    <main className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_60%,rgba(0,87,184,0.12),transparent)]" />
 
-    return (
-      <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-secondary via-background to-background p-6 md:p-12">
-        <div className="max-w-6xl mx-auto">
-          <header className="mb-12">
-            <h1 className="text-5xl font-extrabold tracking-tighter uppercase italic drop-shadow-[0_0_15px_rgba(0,87,184,0.4)]">
-              Trophy <span className="text-primary">Hub</span>
-            </h1>
-            <p className="text-muted-foreground mt-2 font-mono text-xs uppercase tracking-[0.3em]">
-              Synced with PlayStation Network
-            </p>
-          </header>
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-size-[64px_64px]" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {titles.map((game, index) => (
-              <GameCard
-                key={game.npCommunicationId}
-                game={game}
-                index={index}
-              />
-            ))}
-          </div>
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden" aria-hidden="true">
+        <span className="absolute top-[5%] left-[8%] text-[18vw] font-bold text-primary/4 rotate-12">△</span>
+        <span className="absolute bottom-[8%] right-[6%] text-[14vw] font-bold text-primary/4 -rotate-6">○</span>
+        <span className="absolute top-[18%] right-[10%] text-[10vw] font-bold text-primary/4 rotate-3">✕</span>
+        <span className="absolute bottom-[4%] left-[6%] text-[16vw] font-bold text-primary/4 -rotate-12">□</span>
+      </div>
+
+      <div className="relative z-10 flex flex-col items-center text-center gap-10 px-6 animate-in fade-in slide-in-from-bottom-6 duration-700">
+        <div className="space-y-5">
+          <p className="text-muted-foreground font-mono text-xs uppercase tracking-[0.5em]">
+            PlayStation Network
+          </p>
+          <h1 className="text-7xl md:text-[10rem] font-extrabold tracking-tighter uppercase italic leading-none drop-shadow-[0_0_60px_rgba(0,87,184,0.25)]">
+            Trophy
+            <br />
+            <span className="text-primary">Hub</span>
+          </h1>
+          <p className="text-muted-foreground text-base md:text-lg max-w-sm mx-auto leading-relaxed">
+            Track your trophy collection, explore your progress and show off your achievements.
+          </p>
         </div>
-      </main>
-    )
-  } catch (error) {
-    if (error instanceof PSNConfigurationError) {
-      return (
-        <ErrorState
-          title="Configuration Incomplete"
-          icon="🔑"
-          description={
-            <>
-              Missing the variable{' '}
-              <code className="bg-muted px-2 py-1 rounded text-accent">
-                PSN_NPSSO
-              </code>{' '}
-              in your .env.local file.
-            </>
-          }
-        />
-      )
-    }
 
-    return <ErrorState icon="📡" title="Connection Error" />
-  }
+        <Button asChild variant="psn" size="xl">
+          <Link href="/dashboard">View Trophies</Link>
+        </Button>
+      </div>
+    </main>
+  )
 }

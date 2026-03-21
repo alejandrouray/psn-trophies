@@ -1,4 +1,4 @@
-import type { ErrorStateProps } from '@components'
+import type { ErrorStateProps } from './ErrorState.types'
 
 export function ErrorState({
   title = 'Something went wrong',

@@ -1,15 +1,13 @@
-import {
-  Badge,
-  Button,
-  Card,
-  type GameCardFooterProps,
-  type GameCardHeaderProps,
-  type GameCardImageProps,
-  type GameCardProps,
-} from '@components'
+import { Badge, Button, Card } from '@components'
 import { cn } from '@lib/utils'
 import { Clock, Trophy } from 'lucide-react'
 import Image from 'next/image'
+import type {
+  GameCardFooterProps,
+  GameCardHeaderProps,
+  GameCardImageProps,
+  GameCardProps,
+} from './GameCard.types'
 
 function GameCardImage({ src, alt, priority }: GameCardImageProps) {
   return (

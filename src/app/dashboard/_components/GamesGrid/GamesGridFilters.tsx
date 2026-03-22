@@ -1,10 +1,10 @@
 'use client'
 
-import { Input } from '@components'
+import { Button, Input } from '@components'
 import { cn } from '@lib'
 import { Search } from 'lucide-react'
 import { PLATFORMS, STATUSES } from './GamesGrid.constants'
-import type { GamesGridFiltersProps } from './GamesGrid.types'
+import type { GamesGridFiltersProps, TitleFilters } from './GamesGrid.types'
 
 function FilterPill({
   active,
@@ -16,19 +16,19 @@ function FilterPill({
   children: React.ReactNode
 }) {
   return (
-    <button
+    <Button
       type="button"
+      variant="outline"
+      size="sm"
+      aria-pressed={active}
       onClick={onClick}
       className={cn(
-        'px-3 py-1 rounded-full text-xs font-semibold tracking-wide transition-all duration-200',
-        'border whitespace-nowrap',
-        active
-          ? 'bg-primary border-primary text-primary-foreground shadow-[0_0_8px_rgba(0,87,184,0.4)]'
-          : 'border-border text-muted-foreground hover:border-primary/50 hover:text-foreground',
+        'rounded-full text-xs font-semibold tracking-wide',
+        active && 'bg-primary border-primary text-primary-foreground shadow-[0_0_8px_rgba(0,87,184,0.4)]',
       )}
     >
       {children}
-    </button>
+    </Button>
   )
 }
 

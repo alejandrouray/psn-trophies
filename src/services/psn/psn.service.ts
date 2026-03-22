@@ -1,5 +1,6 @@
 import { logger } from '@lib'
 import type { PSNProfile } from '@types'
+import { cacheLife, cacheTag } from 'next/cache'
 import {
   exchangeAccessCodeForAuthTokens,
   exchangeNpssoForAccessCode,
@@ -7,7 +8,6 @@ import {
   getUserTitles,
   getUserTrophyProfileSummary,
 } from 'psn-api'
-import { cacheLife, cacheTag } from 'next/cache'
 import { PSN_ME, TITLES_LIMIT } from './psn.constants'
 import { PSNConfigurationError } from './psn.errors'
 import type { UserOverview } from './psn.types'

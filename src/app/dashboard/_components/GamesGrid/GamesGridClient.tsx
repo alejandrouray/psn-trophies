@@ -3,14 +3,9 @@
 import { GameCard } from '@components'
 import { useState } from 'react'
 import type { TrophyTitle } from 'psn-api'
-import type { TitleFilters } from './GamesGrid.types'
+import { DEFAULT_FILTERS } from './GamesGrid.constants'
+import type { GamesGridClientProps, TitleFilters } from './GamesGrid.types'
 import { GamesGridFilters } from './GamesGridFilters'
-
-const DEFAULT_FILTERS: TitleFilters = {
-  search: '',
-  platform: null,
-  status: 'all',
-}
 
 function filterTitles(titles: TrophyTitle[], filters: TitleFilters): TrophyTitle[] {
   return titles.filter((title) => {
@@ -29,10 +24,6 @@ function filterTitles(titles: TrophyTitle[], filters: TitleFilters): TrophyTitle
 
     return matchesSearch && matchesPlatform && matchesStatus
   })
-}
-
-interface GamesGridClientProps {
-  titles: TrophyTitle[]
 }
 
 export function GamesGridClient({ titles }: GamesGridClientProps) {

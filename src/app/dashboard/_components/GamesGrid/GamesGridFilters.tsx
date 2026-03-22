@@ -3,28 +3,8 @@
 import { Input } from '@components'
 import { cn } from '@lib'
 import { Search } from 'lucide-react'
-import type { FilterPlatform, FilterStatus, TitleFilters } from './GamesGrid.types'
-
-interface GamesGridFiltersProps {
-  filters: TitleFilters
-  totalCount: number
-  filteredCount: number
-  onFiltersChange: (filters: TitleFilters) => void
-}
-
-const PLATFORMS: { value: FilterPlatform; label: string }[] = [
-  { value: 'PS5', label: 'PS5' },
-  { value: 'PS4', label: 'PS4' },
-  { value: 'PS3', label: 'PS3' },
-  { value: 'PSVITA', label: 'Vita' },
-  { value: 'PSPC', label: 'PC' },
-]
-
-const STATUSES: { value: FilterStatus; label: string }[] = [
-  { value: 'all', label: 'All' },
-  { value: 'in-progress', label: 'In Progress' },
-  { value: 'complete', label: 'Complete' },
-]
+import { PLATFORMS, STATUSES } from './GamesGrid.constants'
+import type { GamesGridFiltersProps } from './GamesGrid.types'
 
 function FilterPill({
   active,

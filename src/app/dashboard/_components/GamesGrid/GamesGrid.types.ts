@@ -13,3 +13,10 @@ export interface TitleFilters {
 export interface GamesGridClientProps {
   titles: TrophyTitle[]
 }
+
+export interface GamesGridFiltersProps {
+  filters: TitleFilters
+  totalCount: number
+  filteredCount: number
+  onFiltersChange: (filters: TitleFilters) => void
+}

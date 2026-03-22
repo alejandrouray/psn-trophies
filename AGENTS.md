@@ -348,3 +348,38 @@ Moving a function to `lib/` before a second consumer exists adds indirection wit
 # Dead code
 
 Delete exported functions and types with no consumers. Code that is never called is not "potentially useful" — it is noise that misleads future readers and has to be maintained for no reason. `git` preserves history; there is no need to keep unused code as a safety net.
+
+---
+
+# Adding a shadcn component
+
+shadcn generates files in its own flat structure. Always adapt them to the project's folder convention after installing.
+
+**Step 1 — Install via CLI**
+```bash
+pnpm dlx shadcn@latest add <component>
+```
+
+**Step 2 — Delete the generated file**
+
+shadcn drops a flat file like `src/components/ui/progress.tsx`. Delete it.
+
+**Step 3 — Create the proper folder structure**
+```
+src/components/ui/<component>/
+├── <Component>.types.ts   ← extract props interface here
+├── <Component>.tsx        ← the component (named export, no default)
+└── index.ts               ← export * from each file
+```
+
+Folder name is lowercase (`progress/`), component file is PascalCase (`Progress.tsx`).
+
+**Step 4 — Adapt the generated code**
+- Replace `@/lib/utils` import with `@lib`
+- Change `function Component` to a named export if it isn't already
+- Move the props type to `<Component>.types.ts`
+- Extend the props interface if the component needs custom styling hooks (e.g. `indicatorStyle`, `indicatorClassName`)
+
+**Step 5 — Export from the ui barrel**
+
+Add `export * from './<component>'` to `src/components/ui/index.ts`.

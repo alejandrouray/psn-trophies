@@ -6,7 +6,7 @@ export function TrophyCounts({ earnedTrophies, size = 'sm' }: TrophyCountsProps)
   const s = SIZE[size]
 
   return (
-    <ul className={`flex items-center flex-wrap list-none ${s.gap}`}>
+    <ul className={`list-none ${s.list}`}>
       {TROPHY_TYPES.map(({ key, label, color, icon }) => (
         <li key={key} className={`flex flex-col items-center ${s.li}`}>
           <span className={s.icon} aria-hidden="true">

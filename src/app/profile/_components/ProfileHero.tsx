@@ -75,7 +75,9 @@ export function ProfileHero({ profile, trophySummary }: ProfileHeroProps) {
           aria-hidden="true"
         />
 
-        <TrophyCounts earnedTrophies={earnedTrophies} size="lg" />
+        <div className="flex-1 flex items-center justify-center md:justify-around">
+          <TrophyCounts earnedTrophies={earnedTrophies} size="lg" />
+        </div>
       </div>
     </section>
   )

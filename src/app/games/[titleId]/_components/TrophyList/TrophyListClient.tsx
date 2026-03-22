@@ -43,14 +43,14 @@ export function TrophyListClient({
         aria-labelledby="game-title"
         className="relative overflow-hidden rounded-3xl border border-border bg-card"
       >
-        <div className="flex items-start gap-6 p-6 md:p-8">
-          <div className="relative shrink-0 w-24 h-24 rounded-2xl overflow-hidden shadow-lg">
+        <div className="flex items-start gap-4 sm:gap-6 p-6 md:p-8">
+          <div className="relative shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shadow-lg">
             <Image
               src={game.trophyTitleIconUrl}
               alt=""
               fill
               className="object-cover"
-              sizes="96px"
+              sizes="(max-width: 640px) 80px, 96px"
               priority
             />
           </div>
@@ -75,13 +75,21 @@ export function TrophyListClient({
               {game.trophyTitleName}
             </h2>
 
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-4">
+            <div className="flex w-full min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+              <ul
+                className="grid w-full min-w-0 grid-cols-2 gap-x-3 gap-y-2 list-none p-0 sm:flex sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-4 sm:gap-y-1"
+                aria-label="Trophies earned by type"
+              >
                 {TROPHY_TYPES.map(({ key, icon, label }) => {
                   const { defined, earned } = countByType(key)
                   return (
-                    <div key={key} className="flex items-center gap-1">
-                      <span aria-hidden="true">{icon}</span>
+                    <li
+                      key={key}
+                      className="flex min-w-0 items-center gap-1 tabular-nums"
+                    >
+                      <span className="shrink-0" aria-hidden="true">
+                        {icon}
+                      </span>
                       <span className="text-xs font-mono text-foreground">
                         <span className="sr-only">{label}: </span>
                         {earned}
@@ -89,16 +97,16 @@ export function TrophyListClient({
                           /{defined}
                         </span>
                       </span>
-                    </div>
+                    </li>
                   )
                 })}
-              </div>
+              </ul>
 
-              <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground ml-auto">
+              <div className="flex shrink-0 items-center justify-end gap-2 text-xs font-mono text-muted-foreground sm:justify-start">
                 <span className="sr-only">
                   {earnedCount} of {totalCount} trophies earned
                 </span>
-                <span className="text-foreground font-bold" aria-hidden="true">
+                <span className="font-bold text-foreground" aria-hidden="true">
                   {earnedCount}
                 </span>
                 <span aria-hidden="true">/</span>

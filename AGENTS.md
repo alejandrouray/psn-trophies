@@ -446,3 +446,100 @@ To force a refresh (e.g. after earning a trophy):
 import { revalidateTag } from 'next/cache'
 revalidateTag('psn-overview') // stale-while-revalidate
 ```
+
+## Request-level deduplication with `React.cache`
+
+`'use cache'` persists results across requests. `React.cache` deduplicates within a single render — if two components call the same function in the same render, the second call returns the memoized result without re-executing.
+
+Use it on helper functions (like `authorize()`) that could be called by multiple service functions in the same render:
+
+```ts
+import { cache } from 'react'
+
+const authorize = cache(async () => {
+  // ... auth logic
+})
+```
+
+The two are complementary — use both together when appropriate:
+
+```
+Request 1 ──► authorize() ──► [React.cache] ──► PSN auth (1 real call)
+              getUserOverview() ────────────────┘ (same request, reuses token)
+              getUserTrophies() ────────────────┘ (same request, reuses token)
+
+Request 2 ──► getUserOverview() ──► ['use cache'] ──► no PSN call (cached result)
+```
+
+> **Good to know:** `React.cache` is scoped to the current request only. Each request gets its own memoization scope with no sharing between requests.
+
+---
+
+# Streaming and Suspense
+
+This project uses granular `<Suspense>` boundaries — not a single page-level one — so the static shell (title, layout) renders immediately and each section streams in independently.
+
+## Pattern: async section components
+
+Push data fetching into async Server Components wrapped in `<Suspense>`. The page itself is synchronous:
+
+```tsx
+// page.tsx — sync, renders instantly
+export default function DashboardPage() {
+  return (
+    <main>
+      <Suspense fallback={<DashboardHeaderSkeleton />}>
+        <DashboardHeaderSection />  {/* async — fetches data, suspends */}
+      </Suspense>
+      <Suspense fallback={<GamesGridSkeleton />}>
+        <GamesGrid />               {/* async — fetches data, suspends */}
+      </Suspense>
+    </main>
+  )
+}
+```
+
+Each `*Section` component calls the cached service function. Because the function uses `'use cache'`, both components share the same cached result.
+
+## Route files
+
+| File | Purpose |
+|------|---------|
+| `loading.tsx` | Shown immediately on navigation (Next.js wraps the page in a Suspense boundary). Use the same skeletons as the in-page Suspense fallbacks. |
+| `error.tsx` | Runtime error boundary (Client Component). Use `unstable_retry` prop to retry. Name the default export something other than `Error` to avoid shadowing the global. |
+
+## Skeletons
+
+- Match the dimensions of the real component to minimize CLS (Cumulative Layout Shift).
+- Add `aria-hidden="true"` on the skeleton root — screen readers have no benefit from announcing empty placeholders. Child elements inherit it; do not repeat it on children.
+- For list skeletons, use a stable static key array instead of array index.
+
+```tsx
+// ❌ BAD — index as key, no aria-hidden
+{Array.from({ length: 4 }).map((_, i) => <li key={i} />)}
+
+// ✅ GOOD — stable keys, root hidden from assistive tech
+const SKELETON_KEYS = ['s1', 's2', 's3', 's4'] as const
+
+<ul aria-hidden="true">
+  {SKELETON_KEYS.map((key) => <li key={key} />)}
+</ul>
+```
+
+## Config check before streaming
+
+`error.tsx` cannot distinguish error types in production (server error messages are sanitized). Check configuration errors (missing env vars) synchronously in the page before the Suspense boundaries, so a meaningful UI can be returned without reaching the error boundary:
+
+```tsx
+export default function DashboardPage() {
+  if (!process.env.PSN_NPSSO) {
+    return <ErrorState title="Configuration Incomplete" ... />
+  }
+
+  return (
+    <Suspense fallback={<Skeleton />}>
+      <Section />
+    </Suspense>
+  )
+}
+```

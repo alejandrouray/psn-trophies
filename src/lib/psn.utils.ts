@@ -21,6 +21,13 @@ export const tierCssVar = (grade: TierGrade) => `var(--color-trophy-${grade})`
 export const tierMix = (grade: TierGrade, opacity: number) =>
   `color-mix(in srgb, var(--color-trophy-${grade}) ${opacity}%, transparent)`
 
+export function TIER_GRADE(tier: number): TierGrade {
+  if (tier <= 3) return TIER_GRADES.BRONZE
+  if (tier <= 6) return TIER_GRADES.SILVER
+  if (tier <= 9) return TIER_GRADES.GOLD
+  return TIER_GRADES.PLATINUM
+}
+
 export const TROPHY_TYPES = [
   {
     key: TIER_GRADES.PLATINUM,

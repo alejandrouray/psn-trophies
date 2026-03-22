@@ -1,13 +1,7 @@
-import { Badge, Progress } from '@components'
-import {
-  formatCount,
-  resolveAvatarUrl,
-  TIER_LABEL,
-  tierCssVar,
-  tierMix,
-} from '@lib'
-import Image from 'next/image'
-import { TIER_GRADE, TROPHY_TYPES } from './DashboardHeader.constants'
+import { Badge } from '@components'
+import { PSNAvatar, PSNLevel, TrophyCounts } from '@components/psn'
+import { resolveAvatarUrl, TIER_GRADE, tierMix } from '@lib'
+import Link from 'next/link'
 import type { DashboardHeaderProps } from './DashboardHeader.types'
 
 export function DashboardHeader({
@@ -17,9 +11,6 @@ export function DashboardHeader({
   const { trophyLevel, progress, tier, earnedTrophies } = trophySummary
 
   const grade = TIER_GRADE(tier)
-  const color = tierCssVar(grade)
-  const tierLabel = TIER_LABEL[grade]
-  const nextLevel = Number(trophyLevel) + 1
 
   const onlineId = profile?.onlineId ?? 'PlayStation User'
   const isPlus = profile?.isPlus ?? false
@@ -40,39 +31,21 @@ export function DashboardHeader({
 
       <div className="relative flex flex-col md:flex-row md:items-center gap-6 p-6 md:p-8">
         <div className="flex items-center gap-4 shrink-0">
-          <div
-            className="rounded-full p-[2px] shrink-0"
-            style={{
-              background: `linear-gradient(135deg, ${color}, ${tierMix(grade, 19)})`,
-              boxShadow: `0 0 24px ${tierMix(grade, 15)}`,
-            }}
+          <Link
+            href="/profile"
+            className="rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 hover:opacity-90 transition-opacity"
+            aria-label={`View ${onlineId}'s profile`}
           >
-            <div className="rounded-full overflow-hidden size-16 md:size-20 bg-muted">
-              {avatarUrl ? (
-                <Image
-                  src={avatarUrl}
-                  alt={`${onlineId}'s avatar`}
-                  width={80}
-                  height={80}
-                  className="object-cover size-full"
-                  priority
-                />
-              ) : (
-                <div
-                  className="size-full flex items-center justify-center text-2xl"
-                  aria-hidden="true"
-                >
-                  🎮
-                </div>
-              )}
-            </div>
-          </div>
+            <PSNAvatar avatarUrl={avatarUrl} onlineId={onlineId} grade={grade} size="sm" />
+          </Link>
 
           <div className="space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <h2 className="text-xl md:text-2xl font-bold tracking-tight">
-                {onlineId}
-              </h2>
+              <Link href="/profile" className="hover:underline underline-offset-2">
+                <h2 className="text-xl md:text-2xl font-bold tracking-tight">
+                  {onlineId}
+                </h2>
+              </Link>
               {isPlus && (
                 <Badge
                   variant="outline"
@@ -88,70 +61,19 @@ export function DashboardHeader({
           </div>
         </div>
 
-        <div
-          className="hidden md:block w-px self-stretch bg-border"
-          aria-hidden="true"
+        <div className="hidden md:block w-px self-stretch bg-border" aria-hidden="true" />
+
+        <PSNLevel
+          trophyLevel={trophyLevel}
+          progress={progress}
+          tier={tier}
+          grade={grade}
+          variant="compact"
         />
 
-        <div className="space-y-2 shrink-0 min-w-[180px]">
-          <div className="flex items-center gap-2">
-            <span
-              className="text-5xl font-extrabold tracking-tighter tabular-nums"
-              style={{ color }}
-            >
-              <span className="sr-only">Level </span>
-              {trophyLevel}
-            </span>
-            <Badge
-              variant="outline"
-              className="text-[10px] font-bold uppercase tracking-widest"
-              style={{
-                color,
-                borderColor: tierMix(grade, 25),
-                background: tierMix(grade, 7),
-              }}
-            >
-              {tierLabel}
-            </Badge>
-          </div>
+        <div className="hidden md:block w-px self-stretch bg-border" aria-hidden="true" />
 
-          <Progress
-            value={progress}
-            aria-label={`${progress}% progress to level ${nextLevel}`}
-            indicatorStyle={{
-              background: `linear-gradient(90deg, ${tierMix(grade, 44)}, ${color})`,
-              boxShadow: `0 0 8px ${tierMix(grade, 31)}`,
-            }}
-          />
-
-          <p className="text-muted-foreground font-mono text-[10px]">
-            {progress}% · Lv. {nextLevel}
-          </p>
-        </div>
-
-        <div
-          className="hidden md:block w-px self-stretch bg-border"
-          aria-hidden="true"
-        />
-
-        <ul className="flex items-center gap-5 md:gap-8 flex-wrap list-none">
-          {TROPHY_TYPES.map(({ key, label, color: trophyColor, icon }) => (
-            <li key={key} className="flex flex-col items-center gap-1">
-              <span className="text-xl" aria-hidden="true">
-                {icon}
-              </span>
-              <span
-                className="text-2xl font-extrabold tabular-nums tracking-tight"
-                style={{ color: trophyColor }}
-              >
-                {formatCount(earnedTrophies[key])}
-              </span>
-              <span className="text-muted-foreground font-mono text-[9px] uppercase tracking-widest">
-                {label}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <TrophyCounts earnedTrophies={earnedTrophies} size="sm" />
       </div>
     </section>
   )

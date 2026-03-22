@@ -1,2 +1,5 @@
 export * from '@components/psn/game-card'
+export * from '@components/psn/psn-avatar'
+export * from '@components/psn/psn-level'
 export * from '@components/psn/trophy-card'
+export * from '@components/psn/trophy-counts'

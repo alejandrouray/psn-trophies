@@ -1,4 +1,5 @@
-import { Badge, Button, ShineBorder } from '@components'
+import { Badge, Button } from '@components/ui'
+import { ShineBorder } from '@components/magic-ui'
 import { cn } from '@lib'
 import { Clock, Trophy } from 'lucide-react'
 import Image from 'next/image'

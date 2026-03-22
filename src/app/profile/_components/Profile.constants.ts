@@ -1,4 +1,5 @@
 import { formatCount } from '@lib'
+import type { PSNPlatform } from '@types'
 import type { ProfileStatsProps } from './Profile.types'
 
 export const RECENT_LIMIT = 6
@@ -32,3 +33,14 @@ export const STAT_KEYS = [
     },
   },
 ] as const
+
+export const PLATFORM_CONFIG: Record<
+  PSNPlatform,
+  { label: string; color: string }
+> = {
+  PS5: { label: 'PS5', color: '#00439c' },
+  PS4: { label: 'PS4', color: '#003791' },
+  PS3: { label: 'PS3', color: '#1a5c9e' },
+  PSVITA: { label: 'Vita', color: '#2d7bb5' },
+  PSPC: { label: 'PC', color: '#4a9eca' },
+}

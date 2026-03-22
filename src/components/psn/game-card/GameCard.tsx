@@ -1,5 +1,4 @@
 import { Badge, Button } from '@components/ui'
-import { ShineBorder } from '@components/magic-ui'
 import { cn } from '@lib'
 import { Clock, Trophy } from 'lucide-react'
 import Image from 'next/image'
@@ -117,7 +116,7 @@ export function GameCard({ game, index }: GameCardProps) {
       className="relative transition-all duration-700 hover:scale-[1.02] hover:-translate-y-2 ease-out group animate-in fade-in zoom-in-95 h-full"
       style={{ animationDelay: `${index * 50}ms` }}
     >
-      <article className="relative flex flex-col h-full w-full bg-card rounded-[24px] overflow-hidden">
+      <article className="relative flex flex-col h-full w-full bg-card rounded-[24px] overflow-hidden border border-border group-hover:border-primary/20 transition-colors duration-300">
         <GameCardImage
           src={game.trophyTitleIconUrl}
           alt={`Cover of ${game.trophyTitleName}`}
@@ -137,11 +136,6 @@ export function GameCard({ game, index }: GameCardProps) {
           />
         </div>
 
-        <ShineBorder
-          borderWidth={1}
-          duration={14}
-          shineColor={['#101929', '#0057b8', '#1b6feb']}
-        />
       </article>
     </div>
   )

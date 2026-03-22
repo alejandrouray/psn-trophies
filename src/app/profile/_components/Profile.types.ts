@@ -15,3 +15,7 @@ export interface ProfileStatsProps {
 export interface ProfileRecentActivityProps {
   titles: TrophyTitle[]
 }
+
+export interface ProfilePlatformBreakdownProps {
+  titles: TrophyTitle[]
+}

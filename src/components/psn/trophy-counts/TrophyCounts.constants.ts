@@ -6,7 +6,7 @@ export const SIZE = {
     li: 'gap-1',
   },
   lg: {
-    list: 'grid grid-cols-2 gap-x-10 gap-y-5',
+    list: 'flex items-center flex-wrap gap-6 md:gap-10',
     icon: 'text-2xl',
     count: 'text-3xl',
     li: 'gap-1.5',

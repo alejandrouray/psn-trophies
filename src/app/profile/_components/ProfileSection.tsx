@@ -1,5 +1,6 @@
 import { getUserOverview } from '@services/psn'
 import { ProfileHero } from './ProfileHero'
+import { ProfilePlatformBreakdown } from './ProfilePlatformBreakdown'
 import { ProfileRecentActivity } from './ProfileRecentActivity'
 import { ProfileStats } from './ProfileStats'
 
@@ -17,7 +18,10 @@ export async function ProfileSection() {
         earnedTrophies={trophySummary.earnedTrophies}
       />
 
-      <ProfileRecentActivity titles={titles} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <ProfilePlatformBreakdown titles={titles} />
+        <ProfileRecentActivity titles={titles} />
+      </div>
     </div>
   )
 }

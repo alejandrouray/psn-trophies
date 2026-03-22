@@ -1,3 +1,3 @@
 export const PSN_ME = 'me'
 
-export const TITLES_LIMIT = 15
+export const TITLES_LIMIT = 800

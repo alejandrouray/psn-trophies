@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
       { hostname: '**.psncdn.com' },
       { hostname: '**.playstation.net' },
       { hostname: '**.np.community.playstation.net' },
+      { hostname: '**.playstation.com' },
     ],
   },
 }

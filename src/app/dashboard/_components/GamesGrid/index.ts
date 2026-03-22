@@ -1,2 +1,5 @@
 export * from './GamesGrid'
+export * from './GamesGridClient'
+export * from './GamesGridFilters'
 export * from './GamesGridSkeleton'
+export * from './GamesGrid.types'

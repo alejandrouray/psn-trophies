@@ -1,4 +1,4 @@
-import { Badge } from '@components'
+import { Badge, Progress } from '@components'
 import { formatCount, resolveAvatarUrl } from '@lib'
 import Image from 'next/image'
 import {
@@ -115,26 +115,14 @@ export function DashboardHeader({
             </Badge>
           </div>
 
-          <div
-            className="relative h-1.5 w-full rounded-full bg-secondary border border-border overflow-hidden"
-            role="progressbar"
-            aria-valuenow={progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
+          <Progress
+            value={progress}
             aria-label={`${progress}% progress to level ${nextLevel}`}
-          >
-            {progress > 0 && (
-              <div
-                className="h-full rounded-full transition-all duration-1000"
-                style={{
-                  width: `${progress}%`,
-                  minWidth: '4px',
-                  background: `linear-gradient(90deg, ${tierMix(grade, 44)}, ${color})`,
-                  boxShadow: `0 0 8px ${tierMix(grade, 31)}`,
-                }}
-              />
-            )}
-          </div>
+            indicatorStyle={{
+              background: `linear-gradient(90deg, ${tierMix(grade, 44)}, ${color})`,
+              boxShadow: `0 0 8px ${tierMix(grade, 31)}`,
+            }}
+          />
 
           <p className="text-muted-foreground font-mono text-[10px]">
             {progress}% · Lv. {nextLevel}

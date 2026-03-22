@@ -1,40 +1,14 @@
-import { logger } from '@lib'
+import { isFulfilled, isRejected, logger } from '@lib'
 import type { PSNProfile } from '@types'
 import { cacheLife, cacheTag } from 'next/cache'
 import {
-  exchangeAccessCodeForAuthTokens,
-  exchangeNpssoForAccessCode,
   getProfileFromAccountId,
   getUserTitles,
   getUserTrophyProfileSummary,
 } from 'psn-api'
-import { cache } from 'react'
+import { authorize } from './psn.auth'
 import { PSN_ME, TITLES_LIMIT } from './psn.constants'
-import { PSNConfigurationError } from './psn.errors'
 import type { UserOverview } from './psn.types'
-
-function isFulfilled<T>(
-  result: PromiseSettledResult<T>,
-): result is PromiseFulfilledResult<T> {
-  return result.status === 'fulfilled'
-}
-
-function isRejected<T>(
-  result: PromiseSettledResult<T>,
-): result is PromiseRejectedResult {
-  return result.status === 'rejected'
-}
-
-const authorize = cache(async () => {
-  const npsso = process.env.PSN_NPSSO
-
-  if (!npsso) throw new PSNConfigurationError()
-
-  const accessCode = await exchangeNpssoForAccessCode(npsso)
-  const { accessToken } = await exchangeAccessCodeForAuthTokens(accessCode)
-
-  return { accessToken }
-})
 
 export async function getUserOverview(): Promise<UserOverview> {
   'use cache'

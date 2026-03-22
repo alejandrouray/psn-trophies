@@ -20,4 +20,5 @@ export interface GameCardHeaderProps {
 export interface GameCardFooterProps {
   progress: number
   platforms: PSNPlatform[]
+  npCommunicationId: string
 }

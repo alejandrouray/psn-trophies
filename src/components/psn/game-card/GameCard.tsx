@@ -2,6 +2,7 @@ import { Badge, Button, ShineBorder } from '@components'
 import { cn } from '@lib'
 import { Clock, Trophy } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import type {
   GameCardFooterProps,
   GameCardHeaderProps,
@@ -51,7 +52,7 @@ function GameCardHeader({ title, lastUpdated, dateRaw }: GameCardHeaderProps) {
   )
 }
 
-function GameCardFooter({ progress, platforms }: GameCardFooterProps) {
+function GameCardFooter({ progress, platforms, npCommunicationId }: GameCardFooterProps) {
   return (
     <footer className="mt-auto space-y-5">
       <div className="flex items-center justify-between">
@@ -99,9 +100,9 @@ function GameCardFooter({ progress, platforms }: GameCardFooterProps) {
         />
       </div>
 
-      <Button variant="psn" size="lg" className="w-full">
-        View Trophies
-      </Button>
+      <Button variant="psn" size="lg" className="w-full" asChild>
+          <Link href={`/games/${npCommunicationId}`}>View Trophies</Link>
+        </Button>
     </footer>
   )
 }
@@ -131,6 +132,7 @@ export function GameCard({ game, index }: GameCardProps) {
           <GameCardFooter
             progress={game.progress}
             platforms={game.trophyTitlePlatform?.split(',') ?? []}
+            npCommunicationId={game.npCommunicationId}
           />
         </div>
 

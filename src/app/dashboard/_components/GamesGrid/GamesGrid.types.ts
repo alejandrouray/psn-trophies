@@ -1,5 +1,5 @@
-import type { TrophyTitle } from 'psn-api'
 import type { PSNPlatform } from '@types'
+import type { TrophyTitle } from 'psn-api'
 
 export type FilterStatus = 'all' | 'in-progress' | 'complete'
 

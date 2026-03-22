@@ -1,4 +1,4 @@
-import type { ProfileFromAccountIdResponse } from 'psn-api'
+import type { ProfileFromAccountIdResponse, TrophyType } from 'psn-api'
 
 export type PSNPlatform =
   | 'PS5'
@@ -42,3 +42,35 @@ interface PSNProfileExtended {
 }
 
 export type PSNProfile = ProfileFromAccountIdResponse & PSNProfileExtended
+
+export interface TrophyDetail {
+  id: number
+  name: string
+  description: string
+  type: TrophyType
+  iconUrl: string
+  hidden: boolean
+  earned: boolean
+  earnedDateTime?: string
+  earnedRate?: string
+  groupId: string
+}
+
+export interface TrophyGroupInfo {
+  id: string
+  name: string
+  iconUrl: string
+  definedTrophies: {
+    bronze: number
+    silver: number
+    gold: number
+    platinum: 0 | 1
+  }
+}
+
+export interface GameTrophyDetails {
+  trophies: TrophyDetail[]
+  groups: TrophyGroupInfo[]
+  totalCount: number
+  earnedCount: number
+}

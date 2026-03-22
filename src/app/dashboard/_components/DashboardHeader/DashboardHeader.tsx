@@ -1,13 +1,13 @@
 import { Badge, Progress } from '@components'
-import { formatCount, resolveAvatarUrl } from '@lib'
-import Image from 'next/image'
 import {
-  TIER_GRADE,
+  formatCount,
+  resolveAvatarUrl,
   TIER_LABEL,
-  TROPHY_TYPES,
   tierCssVar,
   tierMix,
-} from './DashboardHeader.constants'
+} from '@lib'
+import Image from 'next/image'
+import { TIER_GRADE, TROPHY_TYPES } from './DashboardHeader.constants'
 import type { DashboardHeaderProps } from './DashboardHeader.types'
 
 export function DashboardHeader({

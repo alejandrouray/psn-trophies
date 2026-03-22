@@ -33,7 +33,35 @@ src/components/ui/ComponentName/
 └── index.ts                    ← re-exports everything with `export * from`
 ```
 
-- Use `@lib/utils` for `cn()`
+## Constants belong in `.constants.ts`, not in the component file
+
+Lookup maps, style dictionaries, and static configuration are **not** component logic — move them to `ComponentName.constants.ts` even when they are only used by one component. A component file should only contain rendering logic.
+
+```ts
+// ❌ BAD — lookup map inline in the component file
+const TIER_STYLES = {
+  platinum: { badge: 'text-cyan-300 ...', glow: '...' },
+  gold: { badge: 'text-yellow-400 ...', glow: '...' },
+} as const
+
+export function TrophyCard({ trophy }: TrophyCardProps) { ... }
+
+// ✅ GOOD — lookup map in TrophyCard.constants.ts, imported where needed
+// TrophyCard.constants.ts
+export const TIER_STYLES = {
+  platinum: { badge: 'text-cyan-300 ...', glow: '...' },
+  gold: { badge: 'text-yellow-400 ...', glow: '...' },
+} as const
+
+// TrophyCard.tsx
+import { TIER_STYLES } from './TrophyCard.constants'
+```
+
+This applies to any static data structure: color maps, label maps, config objects, filter option arrays, etc.
+
+---
+
+
 - `ComponentName.types.ts` exports `ComponentNameProps` (and `ComponentNameVariantProps` if variants exist)
 - `ComponentName.variants.ts` exports `componentNameVariants`
 
@@ -332,16 +360,33 @@ This applies equally to types: `DashboardData` → `UserOverview`, `ProfilePageD
 
 ---
 
-# When to promote a function to lib/
+# When to promote a function or constant to lib/
 
-A function moves to `lib/` when **two or more modules need it** — not before. The trigger is demand, not how generic the function looks.
+A function **or constant** moves to `lib/` when **two or more modules need it** — not before. The trigger is demand, not how generic the code looks.
 
 ```
-Step 1: function lives in the only file that uses it
+Step 1: lives in the only file that uses it
 Step 2: a second module needs it → move to lib/utils.ts (generic) or lib/psn.utils.ts (PSN domain)
 ```
 
-Moving a function to `lib/` before a second consumer exists adds indirection with no benefit (premature abstraction).
+This rule applies equally to lookup maps, label tables, and style dictionaries. If two components define the same tier-label map independently, that is duplication of domain knowledge — not two separate constants that happen to look alike.
+
+```ts
+// ❌ BAD — same domain knowledge in two places
+// DashboardHeader.constants.ts
+const TIER_LABEL = { bronze: 'Bronze', silver: 'Silver', ... }
+
+// TrophyCard.constants.ts
+const TIER_LABELS = { bronze: 'Bronze', silver: 'Silver', ... }
+
+// ✅ GOOD — single source of truth
+// lib/psn.utils.ts
+export const TIER_LABEL: Record<TierGrade, string> = { ... }
+
+// DashboardHeader.constants.ts and TrophyCard.tsx both import from '@lib'
+```
+
+Moving code to `lib/` before a second consumer exists adds indirection with no benefit (premature abstraction).
 
 ---
 

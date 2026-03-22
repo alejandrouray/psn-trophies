@@ -1,5 +1,5 @@
-import { Suspense } from 'react'
 import { ErrorState } from '@components'
+import { Suspense } from 'react'
 import {
   DashboardHeaderSection,
   DashboardHeaderSkeleton,

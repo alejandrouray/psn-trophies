@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@components'
 import { useEffect } from 'react'
 
 interface ErrorProps {
@@ -7,7 +8,7 @@ interface ErrorProps {
   unstable_retry: () => void
 }
 
-export default function Error({ error, unstable_retry }: ErrorProps) {
+export default function DashboardError({ error, unstable_retry }: ErrorProps) {
   useEffect(() => {
     console.error('[Dashboard] Runtime error', error)
   }, [error])
@@ -15,10 +16,14 @@ export default function Error({ error, unstable_retry }: ErrorProps) {
   return (
     <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-secondary via-background to-background flex items-center justify-center p-6">
       <div className="flex flex-col items-center gap-6 text-center max-w-md">
-        <span className="text-6xl" aria-hidden="true">📡</span>
+        <span className="text-6xl" aria-hidden="true">
+          📡
+        </span>
 
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold tracking-tight">Connection Error</h2>
+          <h2 className="text-2xl font-bold tracking-tight">
+            Connection Error
+          </h2>
           <p className="text-muted-foreground text-sm">
             Could not reach the PlayStation Network. This may be temporary.
           </p>
@@ -29,12 +34,9 @@ export default function Error({ error, unstable_retry }: ErrorProps) {
           )}
         </div>
 
-        <button
-          onClick={unstable_retry}
-          className="px-6 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
-        >
+        <Button variant="psn" onClick={unstable_retry}>
           Try again
-        </button>
+        </Button>
       </div>
     </main>
   )

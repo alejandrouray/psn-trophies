@@ -383,3 +383,66 @@ Folder name is lowercase (`progress/`), component file is PascalCase (`Progress.
 **Step 5 — Export from the ui barrel**
 
 Add `export * from './<component>'` to `src/components/ui/index.ts`.
+
+---
+
+# Caching external API calls (ISR)
+
+This project uses Next.js 16's **Cache Components** model (`use cache` + `cacheLife` + `cacheTag`) — not the legacy `revalidate` export or `fetch` options.
+
+## Setup
+
+`cacheComponents: true` must be enabled in `next.config.ts`. Custom cache profiles are defined there too:
+
+```ts
+// next.config.ts
+const nextConfig: NextConfig = {
+  cacheComponents: true,
+  cacheLife: {
+    psn: {
+      stale: 60,       // client serves cached for 1 min without checking
+      revalidate: 300, // background refresh every 5 minutes
+      expire: 3600,    // hard expire after 1 hour of inactivity
+    },
+  },
+}
+```
+
+## Caching a service function
+
+Add the directives at the top of the function body — not at file level, to avoid caching error paths:
+
+```ts
+import { cacheLife, cacheTag } from 'next/cache'
+
+export async function getUserOverview(): Promise<UserOverview> {
+  'use cache'
+  cacheLife('psn')
+  cacheTag('psn-overview')
+
+  // ... API calls
+}
+```
+
+- `'use cache'` — marks the function's return value as cacheable
+- `cacheLife('psn')` — uses the custom profile defined in `next.config.ts`
+- `cacheTag('psn-overview')` — allows on-demand invalidation via `revalidateTag('psn-overview')`
+
+## Cache profile reference
+
+| Profile    | stale | revalidate | expire | When to use |
+|------------|-------|------------|--------|-------------|
+| `seconds`  | 30s   | 1s         | 1m     | Live scores, real-time |
+| `minutes`  | 5m    | 1m         | 1h     | Social feeds |
+| `hours`    | 5m    | 1h         | 1d     | Product data |
+| `days`     | 5m    | 1d         | 1w     | Blog posts |
+| `psn`      | 1m    | 5m         | 1h     | PSN API (rate-limit protection) |
+
+## On-demand invalidation
+
+To force a refresh (e.g. after earning a trophy):
+
+```ts
+import { revalidateTag } from 'next/cache'
+revalidateTag('psn-overview') // stale-while-revalidate
+```

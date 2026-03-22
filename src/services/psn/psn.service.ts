@@ -7,6 +7,7 @@ import {
   getUserTitles,
   getUserTrophyProfileSummary,
 } from 'psn-api'
+import { cacheLife, cacheTag } from 'next/cache'
 import { PSN_ME, TITLES_LIMIT } from './psn.constants'
 import { PSNConfigurationError } from './psn.errors'
 import type { UserOverview } from './psn.types'
@@ -35,6 +36,10 @@ async function authorize() {
 }
 
 export async function getUserOverview(): Promise<UserOverview> {
+  'use cache'
+  cacheLife('psn')
+  cacheTag('psn-overview')
+
   const authorization = await authorize()
 
   // Trophy summary first — contains accountId needed for profile fetch

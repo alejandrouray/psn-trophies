@@ -8,6 +8,7 @@ import {
   getUserTitles,
   getUserTrophyProfileSummary,
 } from 'psn-api'
+import { cache } from 'react'
 import { PSN_ME, TITLES_LIMIT } from './psn.constants'
 import { PSNConfigurationError } from './psn.errors'
 import type { UserOverview } from './psn.types'
@@ -24,7 +25,7 @@ function isRejected<T>(
   return result.status === 'rejected'
 }
 
-async function authorize() {
+const authorize = cache(async () => {
   const npsso = process.env.PSN_NPSSO
 
   if (!npsso) throw new PSNConfigurationError()
@@ -33,7 +34,7 @@ async function authorize() {
   const { accessToken } = await exchangeAccessCodeForAuthTokens(accessCode)
 
   return { accessToken }
-}
+})
 
 export async function getUserOverview(): Promise<UserOverview> {
   'use cache'

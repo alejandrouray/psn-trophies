@@ -1,3 +1,5 @@
+const SKELETON_KEYS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8'] as const
+
 function GameCardSkeleton() {
   return (
     <div className="relative animate-pulse">
@@ -23,8 +25,8 @@ function GameCardSkeleton() {
 export function GamesGridSkeleton() {
   return (
     <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 list-none">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <li key={i}>
+      {SKELETON_KEYS.map((key) => (
+        <li key={key}>
           <GameCardSkeleton />
         </li>
       ))}

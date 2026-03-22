@@ -1,12 +1,11 @@
 import type { TrophyTitle } from 'psn-api'
+import type { PSNPlatform } from '@types'
 
 export type FilterStatus = 'all' | 'in-progress' | 'complete'
 
-export type FilterPlatform = 'PS5' | 'PS4' | 'PS3' | 'PSVITA' | 'PSPC'
-
 export interface TitleFilters {
   search: string
-  platform: FilterPlatform | null
+  platform: PSNPlatform | null
   status: FilterStatus
 }
 

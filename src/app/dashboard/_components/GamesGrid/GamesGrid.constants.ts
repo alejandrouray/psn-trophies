@@ -1,8 +1,9 @@
-import type { FilterPlatform, FilterStatus, TitleFilters } from './GamesGrid.types'
+import type { PSNPlatform } from '@types'
+import type { FilterStatus, TitleFilters } from './GamesGrid.types'
 
 // --- Base constants ---
 
-export const PLATFORMS: { value: FilterPlatform; label: string }[] = [
+export const PLATFORMS: { value: PSNPlatform; label: string }[] = [
   { value: 'PS5', label: 'PS5' },
   { value: 'PS4', label: 'PS4' },
   { value: 'PS3', label: 'PS3' },

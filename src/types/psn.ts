@@ -4,7 +4,7 @@ export type PSNPlatform =
   | 'PS5'
   | 'PS4'
   | 'PS3'
-  | 'PS Vita'
+  | 'PSVITA'
   | 'PSPC'
   | (string & {})
 

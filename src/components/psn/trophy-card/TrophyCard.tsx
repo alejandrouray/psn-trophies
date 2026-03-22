@@ -16,7 +16,7 @@ export function TrophyCard({ trophy, spoilerRevealed = false }: TrophyCardProps)
   return (
     <article
       className={cn(
-        'relative flex items-start gap-4 p-4 rounded-2xl border border-border',
+        'relative flex items-start gap-4 p-4 rounded-2xl border border-border h-full',
         'bg-card transition-all duration-300',
         'hover:border-primary/20 hover:shadow-md',
         trophy.earned && [tier.glow, tier.earnedBorder],
@@ -49,7 +49,7 @@ export function TrophyCard({ trophy, spoilerRevealed = false }: TrophyCardProps)
         )}
       </div>
 
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 flex flex-col h-full">
         <div className="flex items-start justify-between gap-2 mb-1">
           <h3 className="font-semibold text-sm leading-tight text-foreground line-clamp-1">
             {displayName}
@@ -67,7 +67,7 @@ export function TrophyCard({ trophy, spoilerRevealed = false }: TrophyCardProps)
           </span>
         </div>
 
-        <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
+        <p className="text-xs text-muted-foreground line-clamp-2 mb-2 flex-1">
           {displayDescription}
         </p>
 

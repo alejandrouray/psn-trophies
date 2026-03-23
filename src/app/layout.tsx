@@ -1,4 +1,5 @@
 import './globals.css'
+import { Suspense } from 'react'
 import { ViewTransition } from 'react'
 import { geistMono, geistSans, metadata } from './metadata'
 import { AppNav } from './_components/AppNav'
@@ -19,7 +20,9 @@ export default function RootLayout({
         className="min-h-full flex flex-col text-foreground"
         suppressHydrationWarning={true}
       >
-        <AppNav />
+        <Suspense fallback={null}>
+          <AppNav />
+        </Suspense>
         <ViewTransition>{children}</ViewTransition>
       </body>
     </html>

@@ -1,5 +1,10 @@
 import { isFulfilled, isRejected, logger } from '@lib'
-import type { CompareResult, ComparedGame, ComparedUser, PSNProfile } from '@types'
+import type {
+  ComparedGame,
+  ComparedUser,
+  CompareResult,
+  PSNProfile,
+} from '@types'
 import { cacheLife, cacheTag } from 'next/cache'
 import {
   getProfileFromAccountId,
@@ -7,20 +12,14 @@ import {
   getUserTrophyProfileSummary,
   makeUniversalSearch,
 } from 'psn-api'
+import { getUserOverview } from './overview.service'
 import { authorize } from './psn.auth'
 import { TITLES_LIMIT } from './psn.constants'
-import { getUserOverview } from './overview.service'
+import type { PSNUserSearchResult } from './psn.types'
 
-// --- Search ---
-
-export interface PSNUserSearchResult {
-  accountId: string
-  onlineId: string
-  avatarUrl: string
-  isPsPlus: boolean
-}
-
-export async function searchPSNUser(onlineId: string): Promise<PSNUserSearchResult | null> {
+export async function searchPSNUser(
+  onlineId: string,
+): Promise<PSNUserSearchResult | null> {
   const authorization = await authorize()
 
   const { domainResponses } = await makeUniversalSearch(
@@ -43,22 +42,26 @@ export async function searchPSNUser(onlineId: string): Promise<PSNUserSearchResu
   }
 }
 
-// --- Compare ---
-
-export async function compareUsers(theirAccountId: string): Promise<CompareResult> {
+export async function compareUsers(
+  theirAccountId: string,
+): Promise<CompareResult> {
   'use cache'
   cacheLife('psn')
   cacheTag(`psn-compare-${theirAccountId}`)
 
   const authorization = await authorize()
 
-  const [myOverviewResult, theirSummaryResult, theirTitlesResult, theirProfileResult] =
-    await Promise.allSettled([
-      getUserOverview(),
-      getUserTrophyProfileSummary(authorization, theirAccountId),
-      getUserTitles(authorization, theirAccountId, { limit: TITLES_LIMIT }),
-      getProfileFromAccountId(authorization, theirAccountId),
-    ])
+  const [
+    myOverviewResult,
+    theirSummaryResult,
+    theirTitlesResult,
+    theirProfileResult,
+  ] = await Promise.allSettled([
+    getUserOverview(),
+    getUserTrophyProfileSummary(authorization, theirAccountId),
+    getUserTitles(authorization, theirAccountId, { limit: TITLES_LIMIT }),
+    getProfileFromAccountId(authorization, theirAccountId),
+  ])
 
   if (isRejected(myOverviewResult)) {
     throw new Error('Failed to fetch your overview')
@@ -97,23 +100,31 @@ export async function compareUsers(theirAccountId: string): Promise<CompareResul
     titles: theirTitles,
   }
 
-  const theirTitlesMap = new Map(theirTitles.map((t) => [t.npCommunicationId, t]))
+  const theirTitlesMap = new Map(
+    theirTitles.map((t) => [t.npCommunicationId, t]),
+  )
 
   const commonGames: ComparedGame[] = myOverview.titles
-    .filter((t) => theirTitlesMap.has(t.npCommunicationId))
-    .map((myTitle) => {
-      const theirTitle = theirTitlesMap.get(myTitle.npCommunicationId)!
+    .flatMap((myTitle) => {
+      const theirTitle = theirTitlesMap.get(myTitle.npCommunicationId)
+      if (!theirTitle) return []
 
-      return {
-        npCommunicationId: myTitle.npCommunicationId,
-        name: myTitle.trophyTitleName,
-        iconUrl: myTitle.trophyTitleIconUrl,
-        platform: myTitle.trophyTitlePlatform,
-        myProgress: myTitle.progress,
-        theirProgress: theirTitle.progress,
-      }
+      return [
+        {
+          npCommunicationId: myTitle.npCommunicationId,
+          name: myTitle.trophyTitleName,
+          iconUrl: myTitle.trophyTitleIconUrl,
+          platform: myTitle.trophyTitlePlatform,
+          myProgress: myTitle.progress,
+          theirProgress: theirTitle.progress,
+        },
+      ]
     })
-    .sort((a, b) => Math.abs(b.myProgress - b.theirProgress) - Math.abs(a.myProgress - a.theirProgress))
+    .sort(
+      (a, b) =>
+        Math.abs(b.myProgress - b.theirProgress) -
+        Math.abs(a.myProgress - a.theirProgress),
+    )
 
   return { me, them, commonGames }
 }

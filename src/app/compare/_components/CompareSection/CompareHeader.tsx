@@ -1,12 +1,9 @@
-import { PSNAvatar, TrophyCounts } from '@components/psn'
-import { Badge } from '@components/ui'
-import { TIER_GRADE, tierMix, resolveAvatarUrl } from '@lib'
-import type { ComparedUser } from '@types'
-
-interface PlayerCardProps {
-  user: ComparedUser
-  align: 'left' | 'right'
-}
+import { Badge, PSNAvatar, TrophyCounts } from '@components'
+import { resolveAvatarUrl, TIER_GRADE, tierMix } from '@lib'
+import type {
+  CompareHeaderProps,
+  PlayerCardProps,
+} from './CompareSection.types'
 
 function PlayerCard({ user, align }: PlayerCardProps) {
   const { trophyLevel, progress, tier, earnedTrophies } = user.trophySummary
@@ -22,10 +19,13 @@ function PlayerCard({ user, align }: PlayerCardProps) {
         background: `radial-gradient(ellipse 70% 100% at ${align === 'left' ? '0%' : '100%'} 50%, ${tierMix(grade, 8)}, transparent)`,
       }}
     >
-      <div
-        className={`flex flex-col gap-4 items-center text-center`}
-      >
-        <PSNAvatar avatarUrl={avatarUrl} onlineId={onlineId} grade={grade} size="lg" />
+      <div className={`flex flex-col gap-4 items-center text-center`}>
+        <PSNAvatar
+          avatarUrl={avatarUrl}
+          onlineId={onlineId}
+          grade={grade}
+          size="lg"
+        />
 
         <div className="space-y-1">
           <div className="flex items-center justify-center gap-2 flex-wrap">
@@ -58,14 +58,12 @@ function PlayerCard({ user, align }: PlayerCardProps) {
   )
 }
 
-interface CompareHeaderProps {
-  me: ComparedUser
-  them: ComparedUser
-}
-
 export function CompareHeader({ me, them }: CompareHeaderProps) {
   return (
-    <section aria-label="Player comparison" className="flex items-stretch gap-4">
+    <section
+      aria-label="Player comparison"
+      className="flex items-stretch gap-4"
+    >
       <PlayerCard user={me} align="left" />
 
       <div className="flex items-center justify-center px-2 shrink-0">

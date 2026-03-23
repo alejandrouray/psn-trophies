@@ -7,3 +7,10 @@ export interface UserOverview {
   titles: TrophyTitle[]
   totalItemCount: number
 }
+
+export interface PSNUserSearchResult {
+  accountId: string
+  onlineId: string
+  avatarUrl: string
+  isPsPlus: boolean
+}

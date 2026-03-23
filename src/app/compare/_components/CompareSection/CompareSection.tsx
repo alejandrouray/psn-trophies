@@ -2,11 +2,8 @@ import { ErrorState } from '@components'
 import { compareUsers, searchPSNUser } from '@services/psn'
 import { CompareGames } from './CompareGames'
 import { CompareHeader } from './CompareHeader'
+import type { CompareSectionProps } from './CompareSection.types'
 import { CompareStats } from './CompareStats'
-
-interface CompareSectionProps {
-  onlineId: string
-}
 
 export async function CompareSection({ onlineId }: CompareSectionProps) {
   const user = await searchPSNUser(onlineId)

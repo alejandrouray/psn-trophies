@@ -1,5 +1,7 @@
 export * from './CompareGames'
 export * from './CompareHeader'
 export * from './CompareSection'
+export * from './CompareSection.constants'
+export * from './CompareSection.types'
 export * from './CompareSkeleton'
 export * from './CompareStats'

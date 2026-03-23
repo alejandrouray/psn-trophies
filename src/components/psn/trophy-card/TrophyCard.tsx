@@ -4,11 +4,16 @@ import Image from 'next/image'
 import { TIER_STYLES } from './TrophyCard.constants'
 import type { TrophyCardProps } from './TrophyCard.types'
 
-export function TrophyCard({ trophy, spoilerRevealed = false }: TrophyCardProps) {
+export function TrophyCard({
+  trophy,
+  spoilerRevealed = false,
+}: TrophyCardProps) {
   const tier = TIER_STYLES[trophy.type]
   const isHiddenUnearned = trophy.hidden && !trophy.earned
   const masked = isHiddenUnearned && !spoilerRevealed
+
   const displayName = masked ? 'Hidden Trophy' : trophy.name
+
   const displayDescription = masked
     ? 'Earn this trophy to reveal its secret.'
     : trophy.description
@@ -35,7 +40,10 @@ export function TrophyCard({ trophy, spoilerRevealed = false }: TrophyCardProps)
           </div>
         ) : (
           <div className="w-[60px] h-[60px] rounded-xl bg-secondary flex items-center justify-center">
-            <Lock className="w-5 h-5 text-muted-foreground" aria-hidden="true" />
+            <Lock
+              className="w-5 h-5 text-muted-foreground"
+              aria-hidden="true"
+            />
           </div>
         )}
 

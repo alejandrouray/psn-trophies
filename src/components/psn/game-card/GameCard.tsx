@@ -1,4 +1,4 @@
-import { Badge, Button } from '@components/ui'
+import { Badge, Button } from '@components'
 import { cn } from '@lib'
 import { Clock, Trophy } from 'lucide-react'
 import Image from 'next/image'
@@ -52,7 +52,11 @@ function GameCardHeader({ title, lastUpdated, dateRaw }: GameCardHeaderProps) {
   )
 }
 
-function GameCardFooter({ progress, platforms, npCommunicationId }: GameCardFooterProps) {
+function GameCardFooter({
+  progress,
+  platforms,
+  npCommunicationId,
+}: GameCardFooterProps) {
   return (
     <footer className="mt-auto space-y-5">
       <div className="flex items-center justify-between">
@@ -135,7 +139,6 @@ export function GameCard({ game, index }: GameCardProps) {
             npCommunicationId={game.npCommunicationId}
           />
         </div>
-
       </article>
     </div>
   )

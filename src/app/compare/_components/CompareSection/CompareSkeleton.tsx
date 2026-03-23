@@ -1,4 +1,4 @@
-const GAME_SKELETON_KEYS = ['gs1', 'gs2', 'gs3', 'gs4', 'gs5', 'gs6'] as const
+import { GAME_SKELETON_KEYS } from './CompareSection.constants'
 
 function PlayerCardSkeleton() {
   return (
@@ -23,7 +23,10 @@ function StatsSkeleton() {
   return (
     <ul className="grid grid-cols-2 sm:grid-cols-4 gap-3 list-none animate-pulse">
       {['s1', 's2', 's3', 's4'].map((k) => (
-        <li key={k} className="rounded-xl border border-border bg-card px-4 py-5 flex flex-col items-center gap-2">
+        <li
+          key={k}
+          className="rounded-xl border border-border bg-card px-4 py-5 flex flex-col items-center gap-2"
+        >
           <div className="h-3 w-16 rounded bg-muted" />
           <div className="h-7 w-24 rounded bg-muted" />
         </li>
@@ -47,7 +50,10 @@ export function CompareSkeleton() {
 
       <ul className="space-y-3 list-none animate-pulse">
         {GAME_SKELETON_KEYS.map((k) => (
-          <li key={k} className="flex items-center gap-4 rounded-xl border border-border bg-card p-4">
+          <li
+            key={k}
+            className="flex items-center gap-4 rounded-xl border border-border bg-card p-4"
+          >
             <div className="size-12 rounded-lg bg-muted shrink-0" />
             <div className="flex-1 space-y-2">
               <div className="h-4 w-1/2 rounded bg-muted" />

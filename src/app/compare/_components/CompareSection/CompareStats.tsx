@@ -1,14 +1,9 @@
-import type { ComparedGame, ComparedUser } from '@types'
-
-interface StatCellProps {
-  label: string
-  myValue: number | string
-  theirValue: number | string
-}
+import type { CompareStatsProps, StatCellProps } from './CompareSection.types'
 
 function StatCell({ label, myValue, theirValue }: StatCellProps) {
   const myNum = typeof myValue === 'string' ? Number(myValue) : myValue
-  const theirNum = typeof theirValue === 'string' ? Number(theirValue) : theirValue
+  const theirNum =
+    typeof theirValue === 'string' ? Number(theirValue) : theirValue
   const myLeads = myNum > theirNum
   const theyLead = theirNum > myNum
 
@@ -34,19 +29,18 @@ function StatCell({ label, myValue, theirValue }: StatCellProps) {
   )
 }
 
-interface CompareStatsProps {
-  me: ComparedUser
-  them: ComparedUser
-  commonGames: ComparedGame[]
-}
-
 export function CompareStats({ me, them, commonGames }: CompareStatsProps) {
   const myEarned = me.trophySummary.earnedTrophies
   const theirEarned = them.trophySummary.earnedTrophies
 
-  const myTotal = myEarned.bronze + myEarned.silver + myEarned.gold + myEarned.platinum
+  const myTotal =
+    myEarned.bronze + myEarned.silver + myEarned.gold + myEarned.platinum
+
   const theirTotal =
-    theirEarned.bronze + theirEarned.silver + theirEarned.gold + theirEarned.platinum
+    theirEarned.bronze +
+    theirEarned.silver +
+    theirEarned.gold +
+    theirEarned.platinum
 
   const myCompleted = me.titles.filter((t) => t.progress === 100).length
   const theirCompleted = them.titles.filter((t) => t.progress === 100).length
@@ -84,15 +78,14 @@ export function CompareStats({ me, them, commonGames }: CompareStatsProps) {
         </li>
       </ul>
       <p className="mt-3 text-center text-xs text-muted-foreground font-mono">
-        <span className="text-primary font-semibold">You</span>
-        {' '}
-        vs
-        {' '}
+        <span className="text-primary font-semibold">You</span> vs{' '}
         <span className="text-rose-400 font-semibold">
           {them.profile?.onlineId ?? 'Opponent'}
         </span>
         {' · '}
-        <span className="text-foreground font-semibold">{commonGames.length}</span>
+        <span className="text-foreground font-semibold">
+          {commonGames.length}
+        </span>
         {' games in common'}
       </p>
     </section>

@@ -1,4 +1,4 @@
-import { Badge, Progress } from '@components/ui'
+import { Badge, Progress } from '@components'
 import { TIER_LABEL, tierCssVar, tierMix } from '@lib'
 import type { PSNLevelProps } from './PSNLevel.types'
 

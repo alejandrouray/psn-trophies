@@ -1,16 +1,16 @@
 'use client'
 
-import { Button, Input } from '@components/ui'
+import { Button, Input } from '@components'
 import { Search } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useRef } from 'react'
+import { type SubmitEvent, useRef } from 'react'
 import type { CompareSearchProps } from './CompareSearch.types'
 
 export function CompareSearch({ defaultValue = '' }: CompareSearchProps) {
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
 
-  function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
 
     const value = inputRef.current?.value.trim()
@@ -21,7 +21,7 @@ export function CompareSearch({ defaultValue = '' }: CompareSearchProps) {
   }
 
   return (
-    <div className="flex flex-col items-center gap-8 py-16 text-center">
+    <div className="flex flex-col items-center gap-5 pb-6 text-center md:pb-8">
       <div className="space-y-3">
         <h2 className="text-3xl font-bold tracking-tight">
           Compare with another player
@@ -31,7 +31,10 @@ export function CompareSearch({ defaultValue = '' }: CompareSearchProps) {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex w-full max-w-sm gap-2">
+      <form
+        onSubmit={handleSubmit}
+        className="flex w-full max-w-sm items-center gap-2"
+      >
         <div className="relative flex-1">
           <Search
             className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none"
@@ -48,7 +51,11 @@ export function CompareSearch({ defaultValue = '' }: CompareSearchProps) {
             spellCheck={false}
           />
         </div>
-        <Button type="submit" variant="psn">
+        <Button
+          type="submit"
+          variant="psn"
+          className="h-10 shrink-0 rounded-lg"
+        >
           Compare
         </Button>
       </form>

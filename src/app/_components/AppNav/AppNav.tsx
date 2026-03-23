@@ -3,17 +3,13 @@
 import { cn } from '@lib'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-
-const NAV_LINKS = [
-  { href: '/dashboard', label: 'Dashboard' },
-  { href: '/profile', label: 'Profile' },
-  { href: '/compare', label: 'Compare' },
-] as const
+import { NAV_LINKS } from './AppNav.constants'
 
 export function AppNav() {
   const pathname = usePathname()
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/')
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`)
 
   return (
     <nav

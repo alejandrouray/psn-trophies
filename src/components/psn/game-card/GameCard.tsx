@@ -1,4 +1,3 @@
-import { ViewportPrefetch } from '@components/shared'
 import { Badge, Button } from '@components/ui'
 import { cn } from '@lib'
 import { Clock, Trophy } from 'lucide-react'
@@ -102,9 +101,7 @@ function GameCardFooter({ progress, platforms, npCommunicationId }: GameCardFoot
       </div>
 
       <Button variant="psn" size="lg" className="w-full" asChild>
-        <Link prefetch href={`/games/${npCommunicationId}`}>
-          View Trophies
-        </Link>
+        <Link href={`/games/${npCommunicationId}`}>View Trophies</Link>
       </Button>
     </footer>
   )
@@ -120,7 +117,6 @@ export function GameCard({ game, index }: GameCardProps) {
       style={{ animationDelay: `${index * 50}ms` }}
     >
       <article className="relative flex flex-col h-full w-full bg-card rounded-[24px] overflow-hidden border border-border group-hover:border-primary/20 transition-colors duration-300">
-        <ViewportPrefetch href={`/games/${game.npCommunicationId}`} />
         <GameCardImage
           src={game.trophyTitleIconUrl}
           alt={`Cover of ${game.trophyTitleName}`}

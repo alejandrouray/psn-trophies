@@ -131,28 +131,6 @@
   animation: shine-border var(--duration, 14s) infinite linear;
 }
 
-/* Indeterminate bar while App Router navigates (see NavigationPendingOverlay) */
-@keyframes nav-pending-slide {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(450%);
-  }
-}
-
-.nav-pending-bar {
-  animation: nav-pending-slide 1.15s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .nav-pending-bar {
-    animation: none;
-    width: 100%;
-    opacity: 0.65;
-  }
-}
-
 @theme inline {
   --animate-shine: shine var(--duration) infinite linear;
   @keyframes shine {

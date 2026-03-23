@@ -1,3 +1,4 @@
+import { ViewportPrefetch } from '@components/shared'
 import { cn } from '@lib'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -28,10 +29,12 @@ export function ProfileRecentActivity({ titles }: ProfileRecentActivityProps) {
             title.trophyTitlePlatform?.split(',').map((p) => p.trim()) ?? []
 
           return (
-            <li key={title.npCommunicationId}>
+            <li key={title.npCommunicationId} className="relative">
+              <ViewportPrefetch href={`/games/${title.npCommunicationId}`} />
               <Link
+                prefetch
                 href={`/games/${title.npCommunicationId}`}
-                className="flex items-center gap-4 p-4 rounded-2xl border border-border bg-card hover:border-primary/20 hover:shadow-md transition-all duration-300 group"
+                className="relative z-10 flex items-center gap-4 p-4 rounded-2xl border border-border bg-card hover:border-primary/20 hover:shadow-md transition-all duration-300 group"
               >
                 <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0">
                   <Image

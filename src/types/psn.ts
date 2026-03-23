@@ -1,4 +1,9 @@
-import type { ProfileFromAccountIdResponse, TrophyType } from 'psn-api'
+import type {
+  ProfileFromAccountIdResponse,
+  TrophyTitle,
+  TrophyType,
+  UserTrophyProfileSummaryResponse,
+} from 'psn-api'
 
 export type PSNPlatform =
   | 'PS5'
@@ -73,4 +78,25 @@ export interface GameTrophyDetails {
   groups: TrophyGroupInfo[]
   totalCount: number
   earnedCount: number
+}
+
+export interface ComparedUser {
+  profile: PSNProfile | null
+  trophySummary: UserTrophyProfileSummaryResponse
+  titles: TrophyTitle[]
+}
+
+export interface ComparedGame {
+  npCommunicationId: string
+  name: string
+  iconUrl: string
+  platform: PSNPlatform
+  myProgress: number
+  theirProgress: number
+}
+
+export interface CompareResult {
+  me: ComparedUser
+  them: ComparedUser
+  commonGames: ComparedGame[]
 }

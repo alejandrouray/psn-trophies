@@ -1,3 +1,4 @@
+export * from './compare.service'
 export * from './overview.service'
 export * from './psn.errors'
 export * from './psn.types'

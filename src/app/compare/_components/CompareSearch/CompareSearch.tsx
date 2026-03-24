@@ -2,11 +2,15 @@
 
 import { Button, Input } from '@components'
 import { Search } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { type SubmitEvent, useRef } from 'react'
 import type { CompareSearchProps } from './CompareSearch.types'
 
-export function CompareSearch({ defaultValue = '' }: CompareSearchProps) {
+export function CompareSearch({
+  defaultValue = '',
+  demoSuggestion,
+}: CompareSearchProps) {
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -59,6 +63,20 @@ export function CompareSearch({ defaultValue = '' }: CompareSearchProps) {
           Compare
         </Button>
       </form>
+
+      {demoSuggestion && (
+        <p className="text-sm text-muted-foreground">
+          <span aria-hidden="true">Demo — </span>
+          <span className="sr-only">Demo mode suggestion: </span>
+          try{' '}
+          <Link
+            href={`/compare?user=${encodeURIComponent(demoSuggestion)}`}
+            className="text-primary underline-offset-4 hover:underline font-medium"
+          >
+            {demoSuggestion}
+          </Link>
+        </p>
+      )}
     </div>
   )
 }

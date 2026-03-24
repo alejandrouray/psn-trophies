@@ -1,5 +1,6 @@
 import { ErrorState } from '@components'
-import { hasPsnOrDemo } from '@lib/demo'
+import { hasPsnOrDemo, isDemoMode } from '@lib/demo'
+import { readDemoCompareSuggestion } from '@lib/demo/snapshot'
 import { Suspense } from 'react'
 import { CompareSearch } from './_components/CompareSearch'
 import { CompareSection, CompareSkeleton } from './_components/CompareSection'
@@ -33,6 +34,7 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
   }
 
   const { user } = await searchParams
+  const demoSuggestion = isDemoMode() ? readDemoCompareSuggestion() : null
 
   return (
     <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-secondary via-background to-background p-6 md:p-12">
@@ -46,7 +48,10 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
           </p>
         </header>
 
-        <CompareSearch defaultValue={user ?? ''} />
+        <CompareSearch
+          defaultValue={user ?? ''}
+          demoSuggestion={demoSuggestion}
+        />
 
         {user && (
           <Suspense fallback={<CompareSkeleton />}>

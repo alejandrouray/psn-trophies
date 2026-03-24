@@ -43,6 +43,10 @@ export function readDemoGameDetails(
   return hit
 }
 
+export function readDemoCompareSuggestion(): string | null {
+  return getDemoSnapshot().compareDemoOnlineId
+}
+
 export function readDemoSearchResult(
   onlineId: string,
 ): PSNUserSearchResult | null {

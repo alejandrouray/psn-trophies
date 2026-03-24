@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "export:demo": "tsx scripts/export-demo-snapshot.ts",
+    "export:demo": "tsx --tsconfig tsconfig.scripts.json scripts/export-demo-snapshot.ts",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write ."

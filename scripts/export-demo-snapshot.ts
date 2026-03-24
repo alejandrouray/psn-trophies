@@ -1,20 +1,21 @@
 import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { config } from 'dotenv'
+import type { TrophyTitle } from 'psn-api'
 
 config({ path: join(process.cwd(), '.env.local') })
 config({ path: join(process.cwd(), '.env') })
 
 // Loaded after env so PSN_NPSSO is available
-import { normalizeCompareOnlineId } from '../src/lib/demo/demo-env'
-import type { DemoSnapshot } from '../src/lib/demo/snapshot.types'
-import { DEMO_SNAPSHOT_VERSION } from '../src/lib/demo/snapshot.types'
+import { normalizeCompareOnlineId } from '../src/lib/demo/demo-env.js'
+import type { DemoSnapshot } from '../src/lib/demo/snapshot.types.js'
+import { DEMO_SNAPSHOT_VERSION } from '../src/lib/demo/snapshot.types.js'
 import {
   loadCompareUsersForOverview,
   loadSearchPSNUser,
-} from '../src/services/psn/compare.fetch'
-import { loadUserOverview } from '../src/services/psn/overview.fetch'
-import { loadGameTrophyDetails } from '../src/services/psn/trophies.fetch'
+} from '../src/services/psn/compare.fetch.js'
+import { loadUserOverview } from '../src/services/psn/overview.fetch.js'
+import { loadGameTrophyDetails } from '../src/services/psn/trophies.fetch.js'
 
 const BATCH_SIZE = 4
 
@@ -37,7 +38,7 @@ async function main() {
   for (let i = 0; i < titles.length; i += BATCH_SIZE) {
     const chunk = titles.slice(i, i + BATCH_SIZE)
     const results = await Promise.all(
-      chunk.map((t) =>
+      chunk.map((t: TrophyTitle) =>
         loadGameTrophyDetails(t.npCommunicationId, t.npServiceName),
       ),
     )

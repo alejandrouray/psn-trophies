@@ -18,6 +18,7 @@ import { loadUserOverview } from '../src/services/psn/overview.fetch.js'
 import { loadGameTrophyDetails } from '../src/services/psn/trophies.fetch.js'
 
 const BATCH_SIZE = 4
+const DEMO_TITLES_LIMIT = Number(process.env.DEMO_TITLES_LIMIT ?? 10)
 
 async function main() {
   if (!process.env.PSN_NPSSO?.trim()) {
@@ -31,9 +32,11 @@ async function main() {
 
   const gameDetailsByNpCommunicationId: DemoSnapshot['gameDetailsByNpCommunicationId'] =
     {}
-  const titles = overview.titles
+  const titles = overview.titles.slice(0, DEMO_TITLES_LIMIT)
 
-  console.info(`Fetching trophy details for ${titles.length} titles…`)
+  console.info(
+    `Fetching trophy details for ${titles.length} titles (limit: ${DEMO_TITLES_LIMIT})…`,
+  )
 
   for (let i = 0; i < titles.length; i += BATCH_SIZE) {
     const chunk = titles.slice(i, i + BATCH_SIZE)
@@ -47,9 +50,7 @@ async function main() {
       gameDetailsByNpCommunicationId[t.npCommunicationId] = results[j]
     })
 
-    console.info(
-      `  … ${Math.min(i + BATCH_SIZE, titles.length)} / ${titles.length}`,
-    )
+    console.info(`  … ${Math.min(i + BATCH_SIZE, titles.length)} / ${titles.length}`)
   }
 
   const searchByOnlineIdNormalized: DemoSnapshot['searchByOnlineIdNormalized'] =

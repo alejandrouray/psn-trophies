@@ -18,7 +18,8 @@ export function LandingHero() {
           Trophy <span className="text-primary block">Hub</span>
         </h1>
         <p className="text-muted-foreground text-base md:text-lg max-w-sm mx-auto leading-relaxed">
-          Track your trophy collection, explore your progress and show off your achievements.
+          Track your trophy collection, explore your progress and show off your
+          achievements.
         </p>
       </div>
 

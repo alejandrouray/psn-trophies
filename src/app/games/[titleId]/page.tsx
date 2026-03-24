@@ -1,8 +1,9 @@
+import { ErrorState } from '@components'
+import { hasPsnOrDemo } from '@lib/demo'
 import { getUserOverview } from '@services/psn'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { TrophyList, TrophyListSkeleton } from './_components/TrophyList'
-import { ErrorState } from '@components'
 
 export async function generateMetadata({
   params,
@@ -18,7 +19,7 @@ export async function generateMetadata({
 }
 
 export default function GamePage({ params }: PageProps<'/games/[titleId]'>) {
-  if (!process.env.PSN_NPSSO) {
+  if (!hasPsnOrDemo()) {
     return (
       <ErrorState
         title="Configuration Incomplete"

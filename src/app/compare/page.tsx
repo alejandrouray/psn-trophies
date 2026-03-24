@@ -1,4 +1,5 @@
 import { ErrorState } from '@components'
+import { hasPsnOrDemo } from '@lib/demo'
 import { Suspense } from 'react'
 import { CompareSearch } from './_components/CompareSearch'
 import { CompareSection, CompareSkeleton } from './_components/CompareSection'
@@ -13,7 +14,7 @@ interface ComparePageProps {
 }
 
 export default async function ComparePage({ searchParams }: ComparePageProps) {
-  if (!process.env.PSN_NPSSO) {
+  if (!hasPsnOrDemo()) {
     return (
       <ErrorState
         title="Configuration Incomplete"

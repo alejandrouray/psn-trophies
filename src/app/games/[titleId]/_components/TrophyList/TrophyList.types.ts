@@ -1,5 +1,4 @@
-import type { TrophyDetail } from '@types'
-import type { TrophyGroupInfo } from '@types'
+import type { TrophyDetail, TrophyGroupInfo } from '@types'
 import type { TrophyTitle } from 'psn-api'
 import type { TROPHY_FILTERS } from './TrophyList.constants'
 

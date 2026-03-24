@@ -8,31 +8,31 @@
     --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
     /* === Backgrounds === */
-    --background: 224 50% 4%;       /* #05080f — near-black, blue tint */
-    --card: 223 52% 6%;             /* #080d1a — card surface */
+    --background: 224 50% 4%; /* #05080f — near-black, blue tint */
+    --card: 223 52% 6%; /* #080d1a — card surface */
     --popover: 223 52% 6%;
-    --muted: 223 40% 8%;            /* #0c1120 — muted surface */
+    --muted: 223 40% 8%; /* #0c1120 — muted surface */
 
     /* === Text === */
-    --foreground: 210 40% 98%;      /* #f0f4ff — slightly blue-tinted white */
+    --foreground: 210 40% 98%; /* #f0f4ff — slightly blue-tinted white */
     --card-foreground: 210 40% 98%;
     --popover-foreground: 210 40% 98%;
     --muted-foreground: 215 20% 50%; /* #6e7fa3 — blue-tinted medium gray */
 
     /* === Primary — PlayStation Blue === */
-    --primary: 212 100% 36%;        /* #0057b8 */
+    --primary: 212 100% 36%; /* #0057b8 */
     --primary-foreground: 0 0% 100%;
 
     /* === Secondary === */
-    --secondary: 223 40% 9%;        /* #0d1222 */
+    --secondary: 223 40% 9%; /* #0d1222 */
     --secondary-foreground: 210 40% 98%;
 
     /* === Accent — bright PlayStation blue === */
-    --accent: 212 89% 52%;          /* #1b6feb */
+    --accent: 212 89% 52%; /* #1b6feb */
     --accent-foreground: 0 0% 100%;
 
     /* === Borders === */
-    --border: 222 47% 11%;          /* #101929 */
+    --border: 222 47% 11%; /* #101929 */
     --input: 222 47% 11%;
 
     /* === States === */
@@ -41,10 +41,10 @@
     --destructive-foreground: 0 0% 98%;
 
     /* === PlayStation trophy tier colors === */
-    --color-trophy-bronze: #CD7F32;
-    --color-trophy-silver: #C0C0C0;
-    --color-trophy-gold: #FFD700;
-    --color-trophy-platinum: #B0C4DE;
+    --color-trophy-bronze: #cd7f32;
+    --color-trophy-silver: #c0c0c0;
+    --color-trophy-gold: #ffd700;
+    --color-trophy-platinum: #b0c4de;
 
     /* === Radius === */
     --radius: 0.5rem;
@@ -117,7 +117,11 @@
 }
 
 .bg-landing-glow {
-  background: radial-gradient(ellipse 80% 50% at 50% 60%, rgba(0, 87, 184, 0.12), transparent);
+  background: radial-gradient(
+    ellipse 80% 50% at 50% 60%,
+    rgba(0, 87, 184, 0.12),
+    transparent
+  );
 }
 
 .bg-landing-grid {
@@ -126,5 +130,3 @@
     linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
   background-size: 64px 64px;
 }
-
-

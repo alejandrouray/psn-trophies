@@ -25,6 +25,8 @@
       "@components": ["./src/components/index.ts"],
       "@components/*": ["./src/components/*"],
       "@lib": ["./src/lib/index.ts"],
+      "@lib/demo": ["./src/lib/demo/index.ts"],
+      "@lib/demo/*": ["./src/lib/demo/*"],
       "@lib/*": ["./src/lib/*"],
       "@types": ["./src/types/index.ts"],
       "@types/*": ["./src/types/*"]

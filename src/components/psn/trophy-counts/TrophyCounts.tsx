@@ -2,7 +2,10 @@ import { formatCount, TROPHY_TYPES } from '@lib'
 import { SIZE } from './TrophyCounts.constants'
 import type { TrophyCountsProps } from './TrophyCounts.types'
 
-export function TrophyCounts({ earnedTrophies, size = 'sm' }: TrophyCountsProps) {
+export function TrophyCounts({
+  earnedTrophies,
+  size = 'sm',
+}: TrophyCountsProps) {
   const s = SIZE[size]
 
   return (

@@ -36,12 +36,20 @@ export function DashboardHeader({
             className="rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 hover:opacity-90 transition-opacity"
             aria-label={`View ${onlineId}'s profile`}
           >
-            <PSNAvatar avatarUrl={avatarUrl} onlineId={onlineId} grade={grade} size="sm" />
+            <PSNAvatar
+              avatarUrl={avatarUrl}
+              onlineId={onlineId}
+              grade={grade}
+              size="sm"
+            />
           </Link>
 
           <div className="space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <Link href="/profile" className="hover:underline underline-offset-2">
+              <Link
+                href="/profile"
+                className="hover:underline underline-offset-2"
+              >
                 <h2 className="text-xl md:text-2xl font-bold tracking-tight">
                   {onlineId}
                 </h2>
@@ -61,7 +69,10 @@ export function DashboardHeader({
           </div>
         </div>
 
-        <div className="hidden md:block w-px self-stretch bg-border" aria-hidden="true" />
+        <div
+          className="hidden md:block w-px self-stretch bg-border"
+          aria-hidden="true"
+        />
 
         <PSNLevel
           trophyLevel={trophyLevel}
@@ -71,7 +82,10 @@ export function DashboardHeader({
           variant="compact"
         />
 
-        <div className="hidden md:block w-px self-stretch bg-border" aria-hidden="true" />
+        <div
+          className="hidden md:block w-px self-stretch bg-border"
+          aria-hidden="true"
+        />
 
         <TrophyCounts earnedTrophies={earnedTrophies} size="sm" />
       </div>

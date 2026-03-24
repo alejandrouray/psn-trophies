@@ -9,10 +9,8 @@ export async function TrophyList({ titleId }: TrophyListProps) {
 
   if (!game) notFound()
 
-  const { trophies, groups, totalCount, earnedCount } = await getGameTrophyDetails(
-    titleId,
-    game.npServiceName,
-  )
+  const { trophies, groups, totalCount, earnedCount } =
+    await getGameTrophyDetails(titleId, game.npServiceName)
 
   return (
     <TrophyListClient

@@ -1,4 +1,5 @@
 import { ErrorState } from '@components'
+import { hasPsnOrDemo } from '@lib/demo'
 import { Suspense } from 'react'
 import {
   DashboardHeaderSection,
@@ -9,7 +10,7 @@ import { GamesGrid, GamesGridSkeleton } from './_components/GamesGrid'
 export default function DashboardPage() {
   // Check config before streaming starts so we can return a meaningful UI
   // without the error reaching error.tsx (which can't distinguish error types in production)
-  if (!process.env.PSN_NPSSO) {
+  if (!hasPsnOrDemo()) {
     return (
       <ErrorState
         title="Configuration Incomplete"

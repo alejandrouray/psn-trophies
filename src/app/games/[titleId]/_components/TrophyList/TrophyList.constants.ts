@@ -32,7 +32,8 @@ export function applyFilter(
 
   if (groupId !== null) result = result.filter((t) => t.groupId === groupId)
   if (filter === TROPHY_FILTERS.EARNED) result = result.filter((t) => t.earned)
-  if (filter === TROPHY_FILTERS.NOT_EARNED) result = result.filter((t) => !t.earned)
+  if (filter === TROPHY_FILTERS.NOT_EARNED)
+    result = result.filter((t) => !t.earned)
 
   return result
 }

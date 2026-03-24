@@ -1,13 +1,16 @@
 'use client'
 
 import { GameCard } from '@components'
-import { useState } from 'react'
 import type { TrophyTitle } from 'psn-api'
+import { useState } from 'react'
 import { DEFAULT_FILTERS } from './GamesGrid.constants'
 import type { GamesGridClientProps, TitleFilters } from './GamesGrid.types'
 import { GamesGridFilters } from './GamesGridFilters'
 
-function filterTitles(titles: TrophyTitle[], filters: TitleFilters): TrophyTitle[] {
+function filterTitles(
+  titles: TrophyTitle[],
+  filters: TitleFilters,
+): TrophyTitle[] {
   return titles.filter((title) => {
     const matchesSearch =
       filters.search === '' ||
@@ -20,7 +23,9 @@ function filterTitles(titles: TrophyTitle[], filters: TitleFilters): TrophyTitle
     const matchesStatus =
       filters.status === 'all' ||
       (filters.status === 'complete' && title.progress === 100) ||
-      (filters.status === 'in-progress' && title.progress > 0 && title.progress < 100)
+      (filters.status === 'in-progress' &&
+        title.progress > 0 &&
+        title.progress < 100)
 
     return matchesSearch && matchesPlatform && matchesStatus
   })
@@ -42,10 +47,13 @@ export function GamesGridClient({ titles }: GamesGridClientProps) {
 
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
-          <span className="text-5xl" aria-hidden="true">🎮</span>
+          <span className="text-5xl" aria-hidden="true">
+            🎮
+          </span>
           <p className="text-lg font-semibold tracking-tight">No games found</p>
           <p className="text-sm text-muted-foreground max-w-xs">
-            Try adjusting your search or filters to find what you're looking for.
+            Try adjusting your search or filters to find what you're looking
+            for.
           </p>
         </div>
       ) : (

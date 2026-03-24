@@ -21,7 +21,9 @@ export default function CompareError({ error, unstable_retry }: ErrorProps) {
         </span>
 
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold tracking-tight">Connection Error</h2>
+          <h2 className="text-2xl font-bold tracking-tight">
+            Connection Error
+          </h2>
           <p className="text-muted-foreground text-sm">
             Could not reach the PlayStation Network. This may be temporary.
           </p>

@@ -1,8 +1,7 @@
 import './globals.css'
-import { Suspense } from 'react'
-import { ViewTransition } from 'react'
-import { geistMono, geistSans, metadata } from './metadata'
+import { Suspense, ViewTransition } from 'react'
 import { AppNav } from './_components/AppNav'
+import { geistMono, geistSans, metadata } from './metadata'
 
 export { metadata }
 

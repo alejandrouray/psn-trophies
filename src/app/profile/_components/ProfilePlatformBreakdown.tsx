@@ -7,7 +7,9 @@ export function ProfilePlatformBreakdown({
 }: ProfilePlatformBreakdownProps) {
   const counts = titles
     .flatMap((t) =>
-      (t.trophyTitlePlatform?.split(',') ?? []).map((p) => p.trim() as PSNPlatform),
+      (t.trophyTitlePlatform?.split(',') ?? []).map(
+        (p) => p.trim() as PSNPlatform,
+      ),
     )
     .filter((p) => p in PLATFORM_CONFIG)
     .reduce<Partial<Record<PSNPlatform, number>>>((acc, p) => {

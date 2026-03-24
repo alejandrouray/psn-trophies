@@ -25,8 +25,8 @@ export default function GameError({ error, unstable_retry }: ErrorProps) {
             Could Not Load Trophies
           </h2>
           <p className="text-muted-foreground text-sm">
-            Something went wrong fetching this game's trophy data. Try again in a
-            moment.
+            Something went wrong fetching this game's trophy data. Try again in
+            a moment.
           </p>
           {error.digest && (
             <p className="font-mono text-[10px] text-muted-foreground/60 uppercase tracking-widest">

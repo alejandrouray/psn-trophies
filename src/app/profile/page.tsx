@@ -1,4 +1,5 @@
 import { ErrorState } from '@components'
+import { hasPsnOrDemo } from '@lib/demo'
 import { getUserOverview } from '@services/psn'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
@@ -14,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function ProfilePage() {
-  if (!process.env.PSN_NPSSO) {
+  if (!hasPsnOrDemo()) {
     return (
       <ErrorState
         title="Configuration Incomplete"

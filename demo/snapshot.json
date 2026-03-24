@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "generatedAt": "1970-01-01T00:00:00.000Z",
+  "compareDemoOnlineId": null,
+  "overview": {
+    "profile": null,
+    "trophySummary": {
+      "accountId": "0",
+      "trophyLevel": "1",
+      "progress": 0,
+      "tier": 1,
+      "earnedTrophies": { "bronze": 0, "silver": 0, "gold": 0, "platinum": 0 }
+    },
+    "titles": [],
+    "totalItemCount": 0
+  },
+  "gameDetailsByNpCommunicationId": {},
+  "searchByOnlineIdNormalized": {},
+  "compareByAccountId": {}
+}

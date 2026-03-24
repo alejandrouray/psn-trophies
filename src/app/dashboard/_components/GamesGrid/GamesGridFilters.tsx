@@ -24,7 +24,8 @@ function FilterPill({
       onClick={onClick}
       className={cn(
         'rounded-full text-xs font-semibold tracking-wide',
-        active && 'bg-primary border-primary text-primary-foreground shadow-[0_0_8px_rgba(0,87,184,0.4)]',
+        active &&
+          'bg-primary border-primary text-primary-foreground shadow-[0_0_8px_rgba(0,87,184,0.4)]',
       )}
     >
       {children}
@@ -101,7 +102,9 @@ export function GamesGridFilters({
         <p className="text-xs text-muted-foreground font-mono tabular-nums">
           {isFiltered ? (
             <>
-              <span className="text-foreground font-semibold">{filteredCount}</span>
+              <span className="text-foreground font-semibold">
+                {filteredCount}
+              </span>
               {' / '}
               {totalCount} games
             </>

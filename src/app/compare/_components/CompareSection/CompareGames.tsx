@@ -30,7 +30,11 @@ function ProgressRow({ label, progress, color }: ProgressRowProps) {
         aria-label={`${label} ${progress}%`}
       >
         <div
-          className={cn('h-full rounded-full transition-all duration-700', trackColor, glowColor)}
+          className={cn(
+            'h-full rounded-full transition-all duration-700',
+            trackColor,
+            glowColor,
+          )}
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -49,10 +53,13 @@ interface GameRowProps {
 
 function GameRow({ game, myLabel, theirLabel }: GameRowProps) {
   const diff = game.myProgress - game.theirProgress
-  const diffLabel =
-    diff > 0 ? `+${diff}%` : diff < 0 ? `${diff}%` : 'Tied'
+  const diffLabel = diff > 0 ? `+${diff}%` : diff < 0 ? `${diff}%` : 'Tied'
   const diffColor =
-    diff > 0 ? 'text-primary' : diff < 0 ? 'text-rose-400' : 'text-muted-foreground'
+    diff > 0
+      ? 'text-primary'
+      : diff < 0
+        ? 'text-rose-400'
+        : 'text-muted-foreground'
 
   return (
     <li className="flex items-center gap-4 rounded-xl border border-border bg-card p-4 hover:border-border/80 transition-colors">
@@ -74,12 +81,18 @@ function GameRow({ game, myLabel, theirLabel }: GameRowProps) {
           >
             {game.name}
           </Link>
-          <span className={cn('text-xs font-bold tabular-nums shrink-0', diffColor)}>
+          <span
+            className={cn('text-xs font-bold tabular-nums shrink-0', diffColor)}
+          >
             {diffLabel}
           </span>
         </div>
         <ProgressRow label="Me" progress={game.myProgress} color="blue" />
-        <ProgressRow label={theirLabel.slice(0, 3)} progress={game.theirProgress} color="rose" />
+        <ProgressRow
+          label={theirLabel.slice(0, 3)}
+          progress={game.theirProgress}
+          color="rose"
+        />
       </div>
     </li>
   )
@@ -90,11 +103,19 @@ interface CompareGamesProps {
   theirOnlineId: string
 }
 
-export function CompareGames({ commonGames, theirOnlineId }: CompareGamesProps) {
+export function CompareGames({
+  commonGames,
+  theirOnlineId,
+}: CompareGamesProps) {
   if (commonGames.length === 0) {
     return (
-      <section aria-label="Common games" className="flex flex-col items-center gap-4 py-16 text-center">
-        <span className="text-5xl" aria-hidden="true">🎮</span>
+      <section
+        aria-label="Common games"
+        className="flex flex-col items-center gap-4 py-16 text-center"
+      >
+        <span className="text-5xl" aria-hidden="true">
+          🎮
+        </span>
         <p className="text-lg font-semibold">No games in common</p>
         <p className="text-sm text-muted-foreground max-w-xs">
           You and {theirOnlineId} haven't played any of the same games yet.
@@ -107,7 +128,9 @@ export function CompareGames({ commonGames, theirOnlineId }: CompareGamesProps) 
     <section aria-label="Common games">
       <h2 className="text-sm font-mono uppercase tracking-widest text-muted-foreground mb-4">
         Common games
-        <span className="ml-2 text-foreground font-bold">({commonGames.length})</span>
+        <span className="ml-2 text-foreground font-bold">
+          ({commonGames.length})
+        </span>
       </h2>
       <ul className="space-y-3 list-none">
         {commonGames.map((game) => (

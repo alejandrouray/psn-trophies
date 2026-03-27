@@ -2,6 +2,8 @@
 
 A personal portfolio project to explore and showcase PlayStation Network trophy data. Built with Next.js 16 App Router and React 19 as a demonstration of modern frontend development patterns.
 
+https://psn-trophies.vercel.app/dashboard
+
 ## Stack
 
 - **Framework:** Next.js 16 (App Router)

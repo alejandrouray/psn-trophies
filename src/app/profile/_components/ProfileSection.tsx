@@ -1,7 +1,9 @@
 import { getUserOverview } from '@services/psn'
 import { ProfileHero } from './ProfileHero'
+import { ProfileInProgress } from './ProfileInProgress'
+import { ProfileLibraryTrophyMix } from './ProfileLibraryTrophyMix'
 import { ProfilePlatformBreakdown } from './ProfilePlatformBreakdown'
-import { ProfileRecentActivity } from './ProfileRecentActivity'
+import { ProfileRecentPlatinums } from './ProfileRecentPlatinums'
 import { ProfileStats } from './ProfileStats'
 
 export async function ProfileSection() {
@@ -18,9 +20,15 @@ export async function ProfileSection() {
         earnedTrophies={trophySummary.earnedTrophies}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <ProfilePlatformBreakdown titles={titles} />
-        <ProfileRecentActivity titles={titles} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:items-start">
+        <div className="flex flex-col gap-8">
+          <ProfilePlatformBreakdown titles={titles} />
+          <ProfileRecentPlatinums titles={titles} />
+        </div>
+        <div className="flex flex-col gap-8">
+          <ProfileInProgress titles={titles} />
+          <ProfileLibraryTrophyMix titles={titles} />
+        </div>
       </div>
     </div>
   )

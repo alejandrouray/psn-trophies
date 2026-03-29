@@ -12,10 +12,18 @@ export interface ProfileStatsProps {
   earnedTrophies: UserTrophyProfileSummaryResponse['earnedTrophies']
 }
 
-export interface ProfileRecentActivityProps {
+export interface ProfileInProgressProps {
   titles: TrophyTitle[]
 }
 
 export interface ProfilePlatformBreakdownProps {
+  titles: TrophyTitle[]
+}
+
+export interface ProfileLibraryTrophyMixProps {
+  titles: TrophyTitle[]
+}
+
+export interface ProfileRecentPlatinumsProps {
   titles: TrophyTitle[]
 }

@@ -12,31 +12,24 @@ import type {
 
 function GameCardImage({ src, alt, priority }: GameCardImageProps) {
   return (
-    <figure
-      className="relative aspect-4/5 w-full shrink-0 overflow-hidden"
-      style={{
-        maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
-        WebkitMaskImage:
-          'linear-gradient(to bottom, black 60%, transparent 100%)',
-      }}
-    >
+    <figure className="game-card-figure-mask relative w-28 shrink-0 sm:w-full sm:aspect-4/5 overflow-hidden">
       <Image
         src={src}
         alt={alt}
         priority={priority}
         fill
-        className="object-top transition-transform duration-700 group-hover:scale-110"
-        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        className="object-cover object-top sm:transition-transform sm:duration-700 sm:group-hover:scale-110"
+        sizes="(max-width: 640px) 112px, (max-width: 1024px) 50vw, 33vw"
       />
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-card via-card/90 to-transparent z-10" />
+      <div className="hidden sm:block absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-card via-card/90 to-transparent z-10" />
     </figure>
   )
 }
 
 function GameCardHeader({ title, lastUpdated, dateRaw }: GameCardHeaderProps) {
   return (
-    <header className="space-y-1 mb-6">
-      <h3 className="text-2xl font-bold text-foreground tracking-tight leading-tight">
+    <header className="space-y-1 mb-3 sm:mb-6">
+      <h3 className="text-base sm:text-2xl font-bold text-foreground tracking-tight leading-tight line-clamp-2">
         {title}
       </h3>
       <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -58,7 +51,7 @@ function GameCardFooter({
   npCommunicationId,
 }: GameCardFooterProps) {
   return (
-    <footer className="mt-auto space-y-5">
+    <footer className="mt-auto space-y-3 sm:space-y-5">
       <div className="flex items-center justify-between">
         <section
           className="flex items-center gap-2 bg-secondary/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-border"
@@ -104,7 +97,7 @@ function GameCardFooter({
         />
       </div>
 
-      <Button variant="psn" size="lg" className="w-full" asChild>
+      <Button variant="psn" size="lg" className="hidden sm:flex w-full" asChild>
         <Link href={`/games/${npCommunicationId}`}>View Trophies</Link>
       </Button>
     </footer>
@@ -117,17 +110,24 @@ export function GameCard({ game, index }: GameCardProps) {
 
   return (
     <div
-      className="relative transition-all duration-700 hover:scale-[1.02] hover:-translate-y-2 ease-out group animate-in fade-in zoom-in-95 h-full"
+      className="relative transition-all duration-700 sm:hover:scale-[1.02] sm:hover:-translate-y-2 ease-out group animate-in fade-in zoom-in-95 h-full"
       style={{ animationDelay: `${index * 50}ms` }}
     >
-      <article className="relative flex flex-col h-full w-full bg-card rounded-[24px] overflow-hidden border border-border group-hover:border-primary/20 transition-colors duration-300">
+      <article className="relative flex flex-row sm:flex-col h-full w-full bg-card rounded-[20px] sm:rounded-[24px] overflow-hidden sm:border sm:border-border sm:group-hover:border-primary/20 transition-colors duration-300">
+        {/* Mobile-only overlay — makes the entire row tappable */}
+        <Link
+          href={`/games/${game.npCommunicationId}`}
+          className="absolute inset-0 sm:hidden z-10"
+          aria-label={`View trophies for ${game.trophyTitleName}`}
+        />
+
         <GameCardImage
           src={game.trophyTitleIconUrl}
           alt={`Cover of ${game.trophyTitleName}`}
           priority={isPriority}
         />
 
-        <div className="flex flex-col flex-1 p-8 pt-0 -mt-18 z-10 relative">
+        <div className="flex flex-col flex-1 p-4 sm:p-8 sm:pt-0 sm:-mt-18 sm:z-10 relative">
           <GameCardHeader
             title={game.trophyTitleName}
             lastUpdated={lastUpdated}

@@ -57,7 +57,7 @@ export function GamesGridClient({ titles }: GamesGridClientProps) {
           </p>
         </div>
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 list-none">
+        <ul className="flex flex-col gap-3 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-8 list-none">
           {filtered.map((game, index) => (
             <li key={game.npCommunicationId}>
               <GameCard game={game} index={index} />

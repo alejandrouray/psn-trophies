@@ -124,6 +124,19 @@
   );
 }
 
+/* No mask on mobile; vertical fade applied from sm up */
+.game-card-figure-mask {
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+@media (min-width: 640px) {
+  .game-card-figure-mask {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+}
+
 .bg-landing-grid {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
